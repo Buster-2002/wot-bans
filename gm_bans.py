@@ -304,7 +304,7 @@ def main():
         data = evaluator.get_leaderboard()
         evaluator.file_op(
             data,
-            Path(f'clanwars_data/{region}/{event}_{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
+            Path(f'globalmap_data/{region}/{event}_{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
             op=FileOp.WRITE
         )
 
@@ -312,12 +312,12 @@ def main():
     if answer.lower() in YES:
         filename1, filename2 = input('Which JSON files do you want to compare? \nAnswer <filename1> <filename2> > ').split()
         banned = evaluator.get_difference(
-            Path(f'clanwars_data/{region}/{filename1}.json'),
-            Path(f'clanwars_data/{region}/{filename2}.json')
+            Path(f'globalmap_data/{region}/{filename1}.json'),
+            Path(f'globalmap_data/{region}/{filename2}.json')
         )
         evaluator.file_op(
             banned,
-            Path(f'clanwars_data/{region}/{event}_banned.json'),
+            Path(f'globalmap_data/{region}/{event}_banned.json'),
             op=FileOp.WRITE
         )
 
@@ -325,11 +325,11 @@ def main():
     if answer.lower() in YES:
         file = input('What JSON file do you want to format? \nAnswer <filename> > ').strip()
         formatted = evaluator.format_to_md(
-            Path(f'clanwars_data/{region}/{file}.json')
+            Path(f'globalmap_data/{region}/{file}.json')
         )
         evaluator.file_op(
             formatted,
-            Path(f'clanwars_data/{region}/{event}_formatted.md'),
+            Path(f'globalmap_data/{region}/{event}_formatted.md'),
             op=FileOp.WRITE
         )
 
