@@ -12,7 +12,7 @@ import requests
 from colorama import Fore, init
 from humanize import intcomma
 
-from .utils import *
+from utils import *
 
 __author__ = 'Buster#5741'
 __license__ = 'MIT'
