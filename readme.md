@@ -2,7 +2,7 @@
 Made by [Buster#5741](https://discord.com/users/764584777642672160)
 
 ## Introduction
-The code found in `gm_bans.py` and `ranked_bans.py` are used to generate lists of banned people for global map events and ranked seasons respectively. Using this code I will attempt to do so whenever possible.
+The code found in `wot-bans/globalmap.py` and `wot-bans/ranked.py` are used to generate lists of banned people for global map events and ranked seasons respectively. Using this code I will attempt to do so whenever possible, and publish the lists.
 
 ## Previous lists
 
