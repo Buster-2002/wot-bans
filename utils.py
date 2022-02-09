@@ -16,8 +16,12 @@ init(autoreset=True)
 __author__ = 'Buster#5741'
 __license__ = 'MIT'
 __all__ = (
+    # Classes
     'BanEvaluator',
     'FileOp',
+    'Region',
+
+    # Functions
     'print_message',
     'file_operation',
     'escape_md',
@@ -25,7 +29,30 @@ __all__ = (
 )
 
 
+class Region(Enum):
+    '''Enumeration for WoT regions
+    '''
+    europe        = 'eu'
+    north_america = 'na'
+    russia        = 'ru'
+    asia          = 'asia'
+
+    def __str__(self) -> str:
+        return self.value
+
+
+class FileOp(Enum):
+    '''Enumeration for file operations
+    '''
+    WRITE = 'w'
+    READ  = 'r'
+
+
 class BanEvaluator(ABC):
+    @abstractmethod
+    def __init__(self, region: Region, *args, **kwargs):
+        self.region = region
+
 
     @abstractmethod
     def format_to_md(self, filename: Path):
@@ -35,13 +62,6 @@ class BanEvaluator(ABC):
     @abstractmethod
     def get_leaderboard(self):
         raise NotImplementedError()
-
-
-class FileOp(Enum):
-    '''Enumeration for file operations
-    '''
-    WRITE = 'w'
-    READ = 'r'
 
 
 def print_message(

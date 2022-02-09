@@ -34,26 +34,26 @@ CLAN_BAN_HEADER = '''
 ENGLISH_TEXT = '''
 # Player bans for the {logo} {title} campaign ({region})
 
-This list was made by {author}.    
-If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py).    
+This list was made by {author}.
+If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py).
 
-This list contains a total of **{amount_banned}** banned players. Note that I am only able to know the banned players who were on the leaderboard at the time of the event ending.  
+This list contains a total of **{amount_banned}** banned players. Note that I am only able to know the banned players who were on the leaderboard at the time of the event ending.
 '''.strip()
 RUSSIAN_TEXT = '''
-# Забаненные игроков в кампании {logo} {title} ({region})  
+# Забаненные игроков в кампании {logo} {title} ({region})
 
-Этот список был составлен {author}.  
-Если вы хотите проверить код, который я сделал для его создания, сделайте это [здесь](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py).  
+Этот список был составлен {author}.
+Если вы хотите проверить код, который я сделал для его создания, сделайте это [здесь](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py).
 
-Всего в этом списке **{amount_banned}** забаненных игроков. Обратите внимание, что я могу узнать только забаненных игроков, которые были в таблице лидеров на момент окончания мероприятия.  
+Всего в этом списке **{amount_banned}** забаненных игроков. Обратите внимание, что я могу узнать только забаненных игроков, которые были в таблице лидеров на момент окончания мероприятия.
 '''.strip()
 MANDARIN_TEXT = '''
-# {logo} {title} 广告系列 ({region}) 的玩家禁令  
+# {logo} {title} 广告系列 ({region}) 的玩家禁令
 
-此列表由 {author} 制作。  
-如果您想查看我为生成此代码而编写的代码，请在 [此处](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py) 进行操作。  
+此列表由 {author} 制作。
+如果您想查看我为生成此代码而编写的代码，请在 [此处](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py) 进行操作。
 
-此列表包含总共 **{amount_banned}** 被禁玩家。请注意，我只能知道排行榜上的被禁玩家 在活动结束时。  
+此列表包含总共 **{amount_banned}** 被禁玩家。请注意，我只能知道排行榜上的被禁玩家 在活动结束时。
 '''.strip()
 REGION_TRANSLATIONS = {
     'asia': MANDARIN_TEXT + '\n\n' + ENGLISH_TEXT,
@@ -64,12 +64,10 @@ REGION_TRANSLATIONS = {
 
 
 class GmBans(BanEvaluator):
-    '''Program to get the banned users in any World of Tanks campaign by comparing data
-    '''
-
-    def __init__(self, front_id: str, event_id: str, region: str):
+    def __init__(self, region: Region, front_id: str, event_id: str):
         self.region = region
-        self.leaderboard_url = f"https://worldoftanks.{'com' if region == 'na' else region}/en/clanwars/rating/alley/users/?event_id={{0}}&front_id={{1}}&page_size=100&page={{2}}"
+        self.leaderboard_url = f"https://worldoftanks.{'com' if region is Region.north_america else str(region)}/en/clanwars/rating/alley/users/?event_id={{0}}&front_id={{1}}&page_size=100&page={{2}}"
+
         self.front_id = front_id
         self.event_id = event_id
 
@@ -179,11 +177,20 @@ def main():
     '''Determining what to do and putting the GmBans class to work
     '''
     event = input('What is the events name? \n> ').lower()
-    region = input('What region do you want to check for? \n> ').lower()
+
+    while True:
+        try:
+            region: str = input('What region do you want to check for? \n> ').lower()
+            region: Region = Region(region)
+        except KeyError:
+            print_message('Invalid region', colour=Fore.RED)
+        else:
+            break
+
     evaluator = GmBans(
+        region=region,
         front_id=event + '_bg',
-        event_id=event,
-        region=region
+        event_id=event
     )
 
     answer = input('Do you want to get the current leaderboard data? \ny/n > ').strip()

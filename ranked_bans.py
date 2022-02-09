@@ -22,12 +22,10 @@ YES = {'yes', 'y', 'true', 't', '1', 'enable', 'on'}
 
 
 class RankedBans(BanEvaluator):
-    '''Program to get the banned users in any World of Tanks Ranked season by comparing data
-    '''
-
-    def __init__(self, season_id: str, region: str):
+    def __init__(self, region: Region, season_id: str):
         self.region = region
-        self.leaderboard_url = f"https://worldoftanks.{'com' if region == 'na' else region}/parla/seasons/leaderboard/?season_id={season_id}&limit=20&offset={{}}"
+        self.leaderboard_url = f"https://worldoftanks.{'com' if region is Region.north_america else str(region)}/parla/seasons/leaderboard/?season_id={season_id}&limit=20&offset={{}}"
+
         self.season_id = season_id
         self.gold_league_range: range = None
         self.silver_league_range: range = None
@@ -189,10 +187,19 @@ def main():
     '''Determining what to do and putting the RankedBans class to work
     '''
     season_id = input('What is the seasons ID? \n> ').lower()
-    region = input('What region do you want to check for? \n> ').lower()
+
+    while True:
+        try:
+            region: str = input('What region do you want to check for? \n> ').lower()
+            region: Region = Region(region)
+        except KeyError:
+            print_message('Invalid region', colour=Fore.RED)
+        else:
+            break
+
     evaluator = RankedBans(
-        season_id=season_id,
-        region=region
+        region=region,
+        season_id=season_id
     )
 
     answer = input('Do you want to get the current leaderboard data? \ny/n > ').strip()
