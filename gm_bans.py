@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
+'''gm_bans.py: Gets global map player leaderboards and formats final data to applicable markdown'''
+
 import time
 from collections import Counter
 from datetime import datetime
@@ -56,10 +58,10 @@ MANDARIN_TEXT = '''
 此列表包含总共 **{amount_banned}** 被禁玩家。请注意，我只能知道排行榜上的被禁玩家 在活动结束时。
 '''.strip()
 REGION_TRANSLATIONS = {
-    'asia': MANDARIN_TEXT + '\n\n' + ENGLISH_TEXT,
-    'ru': RUSSIAN_TEXT + '\n\n' + ENGLISH_TEXT,
-    'en': ENGLISH_TEXT,
-    'na': ENGLISH_TEXT
+    Region.asia: MANDARIN_TEXT + '\n\n' + ENGLISH_TEXT,
+    Region.russia: RUSSIAN_TEXT + '\n\n' + ENGLISH_TEXT,
+    Region.europe: ENGLISH_TEXT,
+    Region.north_america: ENGLISH_TEXT
 }
 
 
@@ -105,7 +107,7 @@ class GmBans(BanEvaluator):
         # Format the markdown with translation
         formatted.append(REGION_TRANSLATIONS[self.region].format(
             title=self.event_id.title(),
-            region=self.region.upper(),
+            region=str(self.region).upper(),
             author=f'[{__author__}](https://discord.com/users/764584777642672160)',
             amount_banned=len(data.keys()),
             logo=f'<img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/{self.event_id}/promo_logo.png" alt="logo" width="30"/>'
