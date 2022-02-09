@@ -37,7 +37,7 @@ ENGLISH_TEXT = '''
 # Player bans for the {logo} {title} campaign ({region})
 
 This list was made by {author}.
-If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py).
+If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py).
 
 This list contains a total of **{amount_banned}** banned players. Note that I am only able to know the banned players who were on the leaderboard at the time of the event ending.
 '''.strip()
@@ -45,7 +45,7 @@ RUSSIAN_TEXT = '''
 # Забаненные игроков в кампании {logo} {title} ({region})
 
 Этот список был составлен {author}.
-Если вы хотите проверить код, который я сделал для его создания, сделайте это [здесь](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py).
+Если вы хотите проверить код, который я сделал для его создания, сделайте это [здесь](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py).
 
 Всего в этом списке **{amount_banned}** забаненных игроков. Обратите внимание, что я могу узнать только забаненных игроков, которые были в таблице лидеров на момент окончания мероприятия.
 '''.strip()
@@ -53,7 +53,7 @@ MANDARIN_TEXT = '''
 # {logo} {title} 广告系列 ({region}) 的玩家禁令
 
 此列表由 {author} 制作。
-如果您想查看我为生成此代码而编写的代码，请在 [此处](https://github.com/Buster-2002/wot-bans/blob/master/gm_bans.py) 进行操作。
+如果您想查看我为生成此代码而编写的代码，请在 [此处](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py) 进行操作。
 
 此列表包含总共 **{amount_banned}** 被禁玩家。请注意，我只能知道排行榜上的被禁玩家 在活动结束时。
 '''.strip()

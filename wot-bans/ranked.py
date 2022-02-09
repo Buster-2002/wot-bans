@@ -104,8 +104,8 @@ class RankedBans(BanEvaluator):
 
 ## General
 
-This list was made by {__author__}.
-If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/ranked_bans.py).
+This list was made by [{__author__}](https://discord.com/users/764584777642672160).
+If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/ranked.py).
 
 This list contains a total of **{len(data.keys())}** banned players. Note that I am only able to know the banned players who were on the leaderboard
 at the time of the event ending.
@@ -115,19 +115,19 @@ at the time of the event ending.
 
 ## Banned players
 
-### ![goldleaguebadge](https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png) Gold League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png" alt="goldleaguebadge" width="30"/> Gold League
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
 {nl.join(banned_players['gold'])}
 
-### ![silverleaguebadge](https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png) Silver League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png" alt="silverleaguebadge" width="30"/> Silver League
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
 {nl.join(banned_players['silver'])}
 
-### ![bronzeleaguebadge](https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png) Bronze League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png" alt="bronzeleaguebadge" width="30"/> Bronze League
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|

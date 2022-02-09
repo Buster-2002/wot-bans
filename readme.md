@@ -29,7 +29,7 @@ Created by comparing two raw leaderboard data sets (checking which were removed)
 `wot-bans/ranked_data/region/eventname_banned.json`  
 
 **Formatted data**  
-Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown)
+Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). I also calculate which clans had 10 + of their members banned, and show those clans in a separate table
 
 `wot-bans/globalmap_data/region/eventname_formatted.md`  
 `wot-bans/ranked_data/region/eventname_formatted.md`  

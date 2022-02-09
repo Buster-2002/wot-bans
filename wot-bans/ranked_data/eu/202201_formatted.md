@@ -1,19 +1,23 @@
-
-# Player bans for season 202201 of ranked
+# Player bans for season 202201 of ranked (EU)
 
 ## General
 
-**Made by:** Buster#5741
-**Code:** [here](https://gist.github.com/Buster-2002/4db831fb788e4bd89ca15550658e0d13)
-**Total banned players:** 220
-**Top 5 banned clans:**
+This list was made by [Buster#5741](https://discord.com/users/764584777642672160).
+If you wish to check out the code that I made to generate this, do so [here]().
+
+This list contains a total of **220** banned players. Note that I am only able to know the banned players who were on the leaderboard
+at the time of the event ending.
+
+## Top 5 clans with most members banned
 **1:** [NOM1](https://wot-life.com/eu/clan/NOM1/) (4 bans)  
 **2:** [TENTS](https://wot-life.com/eu/clan/TENTS/) (3 bans)  
 **3:** [SWEIN](https://wot-life.com/eu/clan/SWEIN/) (3 bans)  
 **4:** [SLBKO](https://wot-life.com/eu/clan/SLBKO/) (3 bans)  
 **5:** [INV1L](https://wot-life.com/eu/clan/INV1L/) (2 bans)  
 
-## ![goldleaguebadge](https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png) Gold League
+## Banned players
+
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png" alt="goldleaguebadge" width="30"/> Gold League
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
@@ -187,7 +191,7 @@
 | 168 | [maxi223](https://en.wot-life.com/eu/player/maxi223/) | 4,366 | [NOM1](https://wot-life.com/eu/clan/NOM1/) | 103 | 933 | 2,422 | 711 | 126.21% | 130 |
 | 169 | [Ketzerich](https://en.wot-life.com/eu/player/Ketzerich/) | 4,661 | [PGB5](https://wot-life.com/eu/clan/PGB5/) | 120 | 871 | 2,285 | 552 | 123.33% | 148 |
 
-## ![silverleaguebadge](https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png) Silver League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png" alt="silverleaguebadge" width="30"/> Silver League
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
@@ -217,7 +221,7 @@
 | 193 | [RadziooV](https://en.wot-life.com/eu/player/RadziooV/) | 10,499 | [L0RD\_](https://wot-life.com/eu/clan/L0RD_/) | 167 | 833 | 2,265 | 495 | 91.02% | 152 |
 | 194 | [Mleko\_DaTalent](https://en.wot-life.com/eu/player/Mleko_DaTalent/) | 10,793 | [WHATS](https://wot-life.com/eu/clan/WHATS/) | 153 | 833 | 1,904 | 569 | 90.2% | 138 |
 
-## ![bronzeleaguebadge](https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png) Bronze League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png" alt="bronzeleaguebadge" width="30"/> Bronze League
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
