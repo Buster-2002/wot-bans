@@ -147,12 +147,15 @@ def escape_md(text: str) -> str:
     return re.sub(markdown_regex, replacement, text, 0, re.MULTILINE)
 
 
-def get_difference(before: Path, after: Path) -> Dict[str, str]:
+def get_difference(before: Path, after: Path, *, include_new_receivers: bool) -> Dict[str, str]:
     '''Gets the difference between 2 json files by dict keys
 
     Args:
         before (str, optional): The file to check against
         after (str, optional): The file to check with
+        include_new_receivers (bool, optional): Whether to also return players
+                                                who receive a tank due to bans
+                                                (only applies to globalmap.py)
     Returns:
         Dict[str, str]: A list of all the removed dicts
     '''
@@ -160,8 +163,22 @@ def get_difference(before: Path, after: Path) -> Dict[str, str]:
     before = file_operation(file=before, op=FileOp.READ)
     after = file_operation(file=after, op=FileOp.READ)
     diff = {k: before.get(k) for k in list(set(before.keys()) - set(after.keys()))}
+    assert len(diff) > 0 # Assert that there are actually banned people, if not - data hasn't updated yet
 
-    assert len(diff) > 0 # Assert that there are actually banned people, if not - something went wrong
+    if include_new_receivers:
+        new_receivers = {}
+        for player_id, old_data in before.items():
+            if new_data := after[player_id] if player_id in after.keys() else None:
+                if old_data['receives_tank'] == False and new_data['receives_tank'] == True:
+                    new_receivers[player_id] = {
+                        'player_name': old_data['player_name'],
+                        'old_rank': old_data['player_rank'],
+                        'new_rank': new_data['player_rank']
+                    }
+
+        print_message('getting banned players and new tank receivers', start_time)
+        return diff, new_receivers
+
     print_message('getting banned players', start_time)
     return diff
 
@@ -172,7 +189,7 @@ def upload_as_gist(file: Path, description: str):
     Args:
         file (Path): The file to upload
         description (str): The description to give the gist
-    """    
+    """
     start_time = time.perf_counter()
     token = os.getenv('GITHUB_TOKEN')
     data = file_operation(file=file, op=FileOp.READ, as_json=False)
