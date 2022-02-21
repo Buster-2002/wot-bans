@@ -167,6 +167,12 @@ def get_difference(before: Path, after: Path) -> Dict[str, str]:
 
 
 def upload_as_gist(file: Path, description: str):
+    """Uploads a files content to your Github Gists with GITHUB_TOKEN found in .env file
+
+    Args:
+        file (Path): The file to upload
+        description (str): The description to give the gist
+    """    
     start_time = time.perf_counter()
     token = os.getenv('GITHUB_TOKEN')
     data = file_operation(file=file, op=FileOp.READ, as_json=False)
@@ -175,10 +181,10 @@ def upload_as_gist(file: Path, description: str):
         headers={'Authorization': 'token {}'.format(token)},
         params={'scope': 'gist'},
         data=json.dumps({
-            'description': description,
             'public': True,
+            'description': description,
             'files': {
-                'bans.md': {
+                file.name: {
                     'content': data
                 }
             }
