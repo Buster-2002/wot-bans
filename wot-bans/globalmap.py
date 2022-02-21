@@ -6,7 +6,7 @@ import time
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, Optional, Union
 
 import requests
 from colorama import Fore, init
@@ -33,6 +33,11 @@ CLAN_BAN_HEADER = '''
 | Index | Clan | Ban Amount |
 |:--------------:|:--------------:|:--------------:|
 '''.strip()
+NEW_RECEIVERS_HEADER = '''
+## Players that now get a tank due to bans
+
+| Index | Player | Player Rank |
+'''
 ENGLISH_TEXT = '''
 # Player bans for the {logo} {title} campaign ({region})
 *Made by {author}*
@@ -96,6 +101,7 @@ class GmBans(BanEvaluator):
 
         self.front_id = front_id
         self.event_id = event_id
+        self.new_receivers: Optional[dict] = None
 
 
     def format_to_md(self, filename: Path) -> str:
@@ -152,6 +158,13 @@ class GmBans(BanEvaluator):
         for i, v in enumerate(data.values(), 1):
             formatted.append(f'''| {i} | [{escape_md(v['player_name'])}](https://en.wot-life.com/eu/player/{v['player_name']}/) | {intcomma(v['player_rank'])} | {f"[{escape_md(v['clan_tag'])}](https://wot-life.com/eu/clan/{v['clan_tag']}/)"  if v['clan_tag'] else 'No Clan'} | {intcomma(v['clan_rank']) or 'N/A'} | {intcomma(v['player_fame_points'])} | {v['player_battles_count']} |''')
 
+        formatted.append('\n')
+
+        # Add new receivers rows
+        formatted.append(NEW_RECEIVERS_HEADER)
+        for i, v in enumerate(self.new_receivers.values()):
+            formatted.append(f'| {i} | {v["player_name"]} | from {v["old_rank"]} to {v["new_rank"]} | ')
+
         print_message('formatting to MarkDown', start_time)
         return '\n'.join(formatted)
 
@@ -184,7 +197,8 @@ class GmBans(BanEvaluator):
                         'player_name': entry.get('name'),
                         'player_rank': entry.get('rank'),
                         'player_fame_points': entry.get('fame_points'),
-                        'player_battles_count': entry.get('battles_count')
+                        'player_battles_count': entry.get('battles_count'),
+                        'receives_tank': bool([reward['value'] for reward in entry.get('rewards') if reward['reward_type'] == 'tank_availability'])
                     })
 
                 current_page += 1
@@ -232,10 +246,12 @@ def main():
     answer = input('Do you want to compare data and get banned players? \ny/n > ').strip()
     if answer.lower() in YES:
         filename1, filename2 = input('Which JSON files do you want to compare? \nAnswer <filename1> <filename2> > ').split()
-        banned = get_difference(
+        banned, new_receivers = get_difference(
             Path(f'globalmap_data/{region}/{filename1}.json'),
-            Path(f'globalmap_data/{region}/{filename2}.json')
+            Path(f'globalmap_data/{region}/{filename2}.json'),
+            include_new_receivers=True
         )
+        evaluator.new_receivers = new_receivers
         file_operation(
             data=banned,
             file=Path(f'globalmap_data/{region}/{event}_banned.json'),
