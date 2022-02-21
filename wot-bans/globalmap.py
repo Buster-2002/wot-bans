@@ -35,27 +35,51 @@ CLAN_BAN_HEADER = '''
 '''.strip()
 ENGLISH_TEXT = '''
 # Player bans for the {logo} {title} campaign ({region})
+*Made by {author}*
 
-This list was made by {author}.
+## General
+
 If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py).
 
-This list contains a total of **{amount_banned}** banned players. Note that I am only able to know the banned players who were on the leaderboard at the time of the event ending.
+Below follows a list of the names and related statistics of **{amount_banned}** players disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing. 
+
+> Using prohibited modifications or violating the game or [event rules]({regulations}) in any way leads to exclusion from the Alley of Fame, thereby preventing violators from receiving rewards.
+> 
+> \- *World of Tanks Fair Play Policy*
+
+Note that I am only able to know the banned players who were on the leaderboard at the time of the event ending.
 '''.strip()
 RUSSIAN_TEXT = '''
-# Забаненные игроков в кампании {logo} {title} ({region})
+# Блокировка игроков в кампании {logo} {title} ({region})
+*Сделано {author}*
 
-Этот список был составлен {author}.
+## Общий
+
 Если вы хотите проверить код, который я сделал для его создания, сделайте это [здесь](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py).
 
-Всего в этом списке **{amount_banned}** забаненных игроков. Обратите внимание, что я могу узнать только забаненных игроков, которые были в таблице лидеров на момент окончания мероприятия.
+Ниже приведен список имен и статистика **{amount_banned}** игроков, дисквалифицированных из таблицы лидеров. Они не получат никаких наград, и в зависимости от предыдущих нарушений могут быть навсегда заблокированы от игры.
+
+> Использование запрещенных модификаций или нарушение игры или [правил события]({regulations}) каким-либо образом влечет за собой исключение из Аллеи славы, тем самым лишая нарушителей возможности получить награды.
+>
+> \- *Политика честной игры в World of Tanks*
+
+Обратите внимание, что я могу узнать только тех забаненных игроков, которые были в таблице лидеров на момент окончания события.
 '''.strip()
 MANDARIN_TEXT = '''
-# {logo} {title} 广告系列 ({region}) 的玩家禁令
+# {logo} {title} 活动 ({region}) 的玩家禁令
+*由{author}制作*
 
-此列表由 {author} 制作。
-如果您想查看我为生成此代码而编写的代码，请在 [此处](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py) 进行操作。
+## 一般的
 
-此列表包含总共 **{amount_banned}** 被禁玩家。请注意，我只能知道排行榜上的被禁玩家 在活动结束时。
+如果您想查看我为生成此代码而编写的代码，请在 [此处](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py) 进行。
+
+以下是被取消资格的 **{amount_banned}** 玩家的姓名和统计数据列表。他们将不会获得任何奖励，并且根据之前的违规行为可能会被永久禁止参加比赛。
+
+> 以任何方式使用禁止的修改或违反游戏或[活动规则]({regulations})导致被排除在名人堂之外，从而阻止违反者获得奖励。
+>
+> \- *坦克世界公平竞赛政策*
+
+请注意，我只能知道活动结束时在排行榜上的被禁玩家。
 '''.strip()
 REGION_TRANSLATIONS = {
     Region.asia: MANDARIN_TEXT + '\n\n' + ENGLISH_TEXT,
@@ -110,7 +134,8 @@ class GmBans(BanEvaluator):
             region=str(self.region).upper(),
             author=f'[{__author__}](https://discord.com/users/764584777642672160)',
             amount_banned=len(data.keys()),
-            logo=f'<img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/{self.event_id}/promo_logo.png" alt="logo" width="30"/>'
+            logo=f'<img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/{self.event_id}/promo_logo.png" alt="logo" width="30"/>',
+            regulations='https://worldoftanks.eu/en/content/confrontation-regulations/'
         ))
 
         formatted.append('\n')
