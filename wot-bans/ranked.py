@@ -51,12 +51,12 @@ class RankedBans(BanEvaluator):
         print_message('setting league ranges', start_time)
 
 
-    def format_to_md(self, filename: Path) -> str:
+    def format_to_md(self, file: Path) -> str:
         '''Formats finalized data to text using MarkDown. Suitable
         for uploading to a Github Gist or other MarkDown sharing system
 
         Args:
-            filename: The file including the finalized data
+            file: The file including the finalized data
         Returns:
             str: The formatted data
         '''
@@ -66,7 +66,7 @@ class RankedBans(BanEvaluator):
             'bronze': []
         }
         start_time = time.perf_counter()
-        data = file_operation(filename=filename, op=FileOp.READ)
+        data = file_operation(file=file, op=FileOp.READ)
 
         # Check if league ranges have been manually set, if not set them using API
         if not any([self.gold_league_range, self.silver_league_range, self.bronze_league_range]):
@@ -210,8 +210,8 @@ def main():
     if answer.lower() in YES:
         data = evaluator.get_leaderboard()
         file_operation(
-            data,
-            Path(f'ranked_data/{region}/{season_id}_{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
+            data=data,
+            file=Path(f'ranked_data/{region}/{season_id}_{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
             op=FileOp.WRITE
         )
 
@@ -223,8 +223,8 @@ def main():
             Path(f'ranked_data/{region}/{filename2}.json')
         )
         file_operation(
-            banned,
-            Path(f'ranked_data/{region}/{season_id}_banned.json'),
+            data=banned,
+            file=Path(f'ranked_data/{region}/{season_id}_banned.json'),
             op=FileOp.WRITE
         )
 
@@ -235,8 +235,8 @@ def main():
             Path(f'ranked_data/{region}/{file}.json')
         )
         file_operation(
-            formatted,
-            Path(f'ranked_data/{region}/{season_id}_formatted.md'),
+            data=formatted,
+            file=Path(f'ranked_data/{region}/{season_id}_formatted.md'),
             op=FileOp.WRITE
         )
 
