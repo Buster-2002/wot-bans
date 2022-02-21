@@ -19,8 +19,8 @@ For the sake of transparency, the raw data is included in this repo. What follow
 **Raw Leaderboard data**  
 Gathered by saving the data for each page from the leaderboard API (which is also used on the leaderboards : [EU](worldoftanks.eu/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [NA](worldoftanks.com/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [RU](worldoftanks.ru/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [ASIA](worldoftanks.asia/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25))
 
-`wot-bans/globalmap_data/region/eventname_%m-%d_%H-%M_data.json`  
-`wot-bans/ranked_data/region/eventname_%m-%d_%H-%M_data.json`  
+`wot-bans/globalmap_data/region/eventname_{month}-{day}_{hour}-{minute}_data.json`  
+`wot-bans/ranked_data/region/eventname_{month}-{day}_{hour}-{minute}_data.json`  
 
 **Raw Banned data**  
 Created by comparing two raw leaderboard data sets (checking which were removed). Note that you need both data from before and after the disqualifications propagated on the API.
