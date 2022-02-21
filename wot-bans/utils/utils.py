@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 import json
+import os
 import re
 import time
 from abc import ABC, abstractmethod
@@ -9,9 +10,12 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, Optional, Union
 
+import requests
 from colorama import Fore, init
+from dotenv import load_dotenv
 from humanize import precisedelta
 
+load_dotenv()
 init(autoreset=True)
 __author__ = 'Buster#5741'
 __license__ = 'MIT'
@@ -25,7 +29,8 @@ __all__ = (
     'print_message',
     'file_operation',
     'escape_md',
-    'get_difference'
+    'get_difference',
+    'upload_as_gist'
 )
 
 
@@ -88,29 +93,33 @@ def print_message(
 
 
 def file_operation(
-    items: Optional[Union[dict, str]] = None,
-    filename: Optional[Path] = None,
-    op: Optional[FileOp] = FileOp.WRITE
+    *,
+    data: Optional[Union[dict, str]] = None,
+    file: Optional[Path] = None,
+    op: Optional[FileOp] = FileOp.WRITE,
+    as_json: Optional[bool] = True
 ) -> Optional[dict]:
     '''Writes resulting data to file or reads data from file
 
     Args:
-        items (Optional[Union[dict, str]], optional): The data that should be written to the file. Defaults to None.
+        data (Optional[Union[dict, str]], optional): The data that should be written to the file. Defaults to None.
         filename (Optional[Path], optional): The file to write the data to. Defaults to None.
         op (Optional[FileOp], optional): The file operation. Defaults to FileOp.WRITE.
     Returns:
         Optional[dict]: The file contents in json form
     '''
-    with open(filename, op.value, encoding='utf-8') as f:
+    with open(file, op.value, encoding='utf-8') as f:
         if op == FileOp.READ:
-            return json.load(f)
+            if as_json:
+                return json.load(f)
+            return f.read()
 
         if op == FileOp.WRITE:
-            if isinstance(items, dict):
-                json.dump(items, f)
+            if isinstance(data, dict):
+                json.dump(data, f)
 
-            elif isinstance(items, str):
-                f.write(items)
+            elif isinstance(data, str):
+                f.write(data)
 
     return None
 
@@ -148,10 +157,32 @@ def get_difference(before: Path, after: Path) -> Dict[str, str]:
         Dict[str, str]: A list of all the removed dicts
     '''
     start_time = time.perf_counter()
-    before = file_operation(filename=before, op=FileOp.READ)
-    after = file_operation(filename=after, op=FileOp.READ)
+    before = file_operation(file=before, op=FileOp.READ)
+    after = file_operation(file=after, op=FileOp.READ)
     diff = {k: before.get(k) for k in list(set(before.keys()) - set(after.keys()))}
 
     assert len(diff) > 0 # Assert that there are actually banned people, if not - something went wrong
     print_message('getting banned players', start_time)
     return diff
+
+
+def upload_as_gist(file: Path, description: str):
+    start_time = time.perf_counter()
+    token = os.getenv('GITHUB_TOKEN')
+    data = file_operation(file=file, op=FileOp.READ, as_json=False)
+    r = requests.post(
+        'https://api.github.com/gists',
+        headers={'Authorization': 'token {}'.format(token)},
+        params={'scope': 'gist'},
+        data=json.dumps({
+            'description': description,
+            'public': True,
+            'files': {
+                'bans.md': {
+                    'content': data
+                }
+            }
+        })
+    )
+    url = r.json()['html_url']
+    print_message(f'uploading to gist ({url})', start_time)
