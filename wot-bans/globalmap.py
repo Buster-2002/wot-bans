@@ -108,7 +108,7 @@ class GmBans(BanEvaluator):
             str: The formatted data
         '''
         formatted, start_time = [], time.perf_counter()
-        data = file_operation(filename=filename, op=FileOp.READ)
+        data = file_operation(file=filename, op=FileOp.READ)
 
         # Sort banned players by their rank respectively
         data = dict(sorted(
@@ -224,21 +224,21 @@ def main():
     if answer.lower() in YES:
         data = evaluator.get_leaderboard()
         file_operation(
-            data,
-            Path(f'globalmap_data/{region}/{event}_{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
+            data=data,
+            file=Path(f'globalmap_data/{region}/{event}_{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
             op=FileOp.WRITE
         )
 
     answer = input('Do you want to compare data and get banned players? \ny/n > ').strip()
     if answer.lower() in YES:
         filename1, filename2 = input('Which JSON files do you want to compare? \nAnswer <filename1> <filename2> > ').split()
-        banned = evaluator.get_difference(
+        banned = get_difference(
             Path(f'globalmap_data/{region}/{filename1}.json'),
             Path(f'globalmap_data/{region}/{filename2}.json')
         )
         file_operation(
-            banned,
-            Path(f'globalmap_data/{region}/{event}_banned.json'),
+            data=banned,
+            file=Path(f'globalmap_data/{region}/{event}_banned.json'),
             op=FileOp.WRITE
         )
 
@@ -249,9 +249,17 @@ def main():
             Path(f'globalmap_data/{region}/{file}.json')
         )
         file_operation(
-            formatted,
-            Path(f'globalmap_data/{region}/{event}_formatted.md'),
+            data=formatted,
+            file=Path(f'globalmap_data/{region}/{event}_formatted.md'),
             op=FileOp.WRITE
+        )
+
+    answer = input('Do you want to upload formatted data to a Github Gist? \ny/n ').strip()
+    if answer.lower() in YES:
+        file = input('What MD file do you want to upload? \nAnswer <filename> > ').strip()
+        upload_as_gist(
+            Path(f'globalmap_data/{region}/{event}_formatted.md'),
+            f'Player bans for the {event.title()} campaign ({region})'
         )
 
 if __name__ == '__main__':
