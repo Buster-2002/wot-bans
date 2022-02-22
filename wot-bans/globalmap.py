@@ -37,7 +37,8 @@ NEW_RECEIVERS_HEADER = '''
 ## Players that now get a tank due to bans
 
 | Index | Player | Player Rank |
-'''
+|:--------------:|:--------------:|:--------------:|
+'''.strip()
 ENGLISH_TEXT = '''
 # Player bans for the {logo} {title} campaign ({region})
 *Made by {author}*
@@ -97,7 +98,8 @@ REGION_TRANSLATIONS = {
 class GmBans(BanEvaluator):
     def __init__(self, region: Region, front_id: str, event_id: str):
         self.region = region
-        self.leaderboard_url = f"https://worldoftanks.{'com' if region is Region.north_america else str(region)}/en/clanwars/rating/alley/users/?event_id={{0}}&front_id={{1}}&page_size=100&page={{2}}"
+        self.link_region = 'com' if region is Region.north_america else str(region)
+        self.leaderboard_url = f"https://worldoftanks.{self.link_region}/en/clanwars/rating/alley/users/?event_id={{0}}&front_id={{1}}&page_size=100&page={{2}}"
 
         self.front_id = front_id
         self.event_id = event_id
@@ -125,7 +127,7 @@ class GmBans(BanEvaluator):
 
         # Get clans that have 10 + of their members banned
         clans_with_10plus_bans = list(sorted([
-                (f'[{c}](https://wot-life.com/eu/clan/{c}/)', b)
+                (f'[{c}](https://wot-life.com/{self.region}/clan/{c}/)', b)
                 for c, b in Counter([v['clan_tag']
                 for v in data.values() if v['clan_tag'] is not None
                 ]).items() if b >= 10
@@ -141,7 +143,7 @@ class GmBans(BanEvaluator):
             author=f'[{__author__}](https://discord.com/users/764584777642672160)',
             amount_banned=len(data.keys()),
             logo=f'<img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/{self.event_id}/promo_logo.png" alt="logo" width="30"/>',
-            regulations='https://worldoftanks.eu/en/content/confrontation-regulations/'
+            regulations=f'https://worldoftanks.{self.link_region}/en/content/confrontation-regulations/'
         ))
 
         formatted.append('\n')
@@ -156,14 +158,14 @@ class GmBans(BanEvaluator):
         # Add the player ban rows
         formatted.append(PLAYER_BAN_HEADER)
         for i, v in enumerate(data.values(), 1):
-            formatted.append(f'''| {i} | [{escape_md(v['player_name'])}](https://en.wot-life.com/eu/player/{v['player_name']}/) | {intcomma(v['player_rank'])} | {f"[{escape_md(v['clan_tag'])}](https://wot-life.com/eu/clan/{v['clan_tag']}/)"  if v['clan_tag'] else 'No Clan'} | {intcomma(v['clan_rank']) or 'N/A'} | {intcomma(v['player_fame_points'])} | {v['player_battles_count']} |''')
+            formatted.append(f'''| {i} | [{escape_md(v['player_name'])}](https://en.wot-life.com/{self.region}/player/{v['player_name']}/) | {intcomma(v['player_rank'])} | {f"[{escape_md(v['clan_tag'])}](https://wot-life.com/{self.region}/clan/{v['clan_tag']}/)" if v['clan_tag'] else 'No Clan'} | {intcomma(v['clan_rank']) or 'N/A'} | {intcomma(v['player_fame_points'])} | {v['player_battles_count']} |''')
 
         formatted.append('\n')
 
         # Add new receivers rows
         formatted.append(NEW_RECEIVERS_HEADER)
-        for i, v in enumerate(self.new_receivers.values()):
-            formatted.append(f'| {i} | {v["player_name"]} | from {v["old_rank"]} to {v["new_rank"]} | ')
+        for i, v in enumerate(self.new_receivers.values(), 1):
+            formatted.append(f'| {i} | [{escape_md(v["player_name"])}](https://en.wot-life.com/{self.region}/player/{v["player_name"]}/) | from {v["old_rank"]} to {v["new_rank"]} | ')
 
         print_message('formatting to MarkDown', start_time)
         return '\n'.join(formatted)
@@ -188,7 +190,7 @@ class GmBans(BanEvaluator):
             ).json()
 
             if r.get('status') == 'ok':
-                print_message(f'Received page no.{current_page}', colour=Fore.CYAN)
+                print_message(f'Received page {current_page + 1}/{r["pages_count"]}', colour=Fore.CYAN)
 
                 for entry in r['accounts_ratings']:
                     leaderboard[entry['id']] = ({ # Key is player ID
