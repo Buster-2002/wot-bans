@@ -127,10 +127,10 @@ class GmBans(BanEvaluator):
 
         # Get clans that have 10 + of their members banned
         clans_with_10plus_bans = list(sorted([
-                (f'[{c}](https://wot-life.com/{self.region}/clan/{c}/)', b)
-                for c, b in Counter([v['clan_tag']
+                (f'[{escape_md(clan_tag)}]({stats_link(clan_tag, self.region, is_clan=True)})')
+                for clan_tag, ban_amount in Counter([v['clan_tag']
                 for v in data.values() if v['clan_tag'] is not None
-                ]).items() if b >= 10
+                ]).items() if ban_amount >= 10
             ],
             key=lambda item: item[1],
             reverse=True
@@ -158,14 +158,14 @@ class GmBans(BanEvaluator):
         # Add the player ban rows
         formatted.append(PLAYER_BAN_HEADER)
         for i, v in enumerate(data.values(), 1):
-            formatted.append(f'''| {i} | [{escape_md(v['player_name'])}](https://en.wot-life.com/{self.region}/player/{v['player_name']}/) | {intcomma(v['player_rank'])} | {f"[{escape_md(v['clan_tag'])}](https://wot-life.com/{self.region}/clan/{v['clan_tag']}/)" if v['clan_tag'] else 'No Clan'} | {intcomma(v['clan_rank']) or 'N/A'} | {intcomma(v['player_fame_points'])} | {v['player_battles_count']} |''')
+            formatted.append(f'''| {i} | [{escape_md(v['player_name'])}]({stats_link(v['player_name'], self.region)}) | {intcomma(v['player_rank'])} | {f"[{escape_md(v['clan_tag'])}]({stats_link(v['clan_tag'], self.region, is_clan=True)})" if v['clan_tag'] else 'No Clan'} | {intcomma(v['clan_rank']) or 'N/A'} | {intcomma(v['player_fame_points'])} | {v['player_battles_count']} |''')
 
         formatted.append('\n')
 
         # Add new receivers rows
         formatted.append(NEW_RECEIVERS_HEADER)
         for i, v in enumerate(self.new_receivers.values(), 1):
-            formatted.append(f'| {i} | [{escape_md(v["player_name"])}](https://en.wot-life.com/{self.region}/player/{v["player_name"]}/) | from {v["old_rank"]} to {v["new_rank"]} | ')
+            formatted.append(f'''| {i} | [{escape_md(v['player_name'])}]({stats_link(v['player_name'], self.region)}) | from {v['old_rank']} to {v['new_rank']} | ''')
 
         print_message('formatting to MarkDown', start_time)
         return '\n'.join(formatted)
