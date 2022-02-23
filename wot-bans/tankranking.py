@@ -8,6 +8,7 @@ from pathlib import Path
 
 from tabulate import tabulate
 
+EVENT = input('Event name > ').lower()
 REGION = input('Region > ').lower()
 FILENAME = input('Filename > ')
 
@@ -40,5 +41,5 @@ if __name__ == '__main__':
         if len(data) == 2: # data[0] is amount of clan members that participated and data[1] is how many got a tank
             formatted.append([str(i).zfill(3), clan_tag, data[0], data[1], f'{(data[0] / data[1]) * 100:.2f}%'])
 
-    with open(f'{REGION}_tanks.txt', 'w', encoding='utf-8') as file:
+    with open(f'globalmap_data/{REGION}/{EVENT}_tankranking.txt', 'w', encoding='utf-8') as file:
         file.write(tabulate(formatted, headers=['Rank', 'Clan', 'Tanks', 'Participants', 'Rate']))
