@@ -1,0 +1,20 @@
+ Index   | Name            | Rank   | Clan   | Rank
+---------+-----------------+--------+--------+--------
+ 001     | Pisik_HutHut    | 1      | IMPCT  | 1
+ 002     | Ring_My_Bell    | 2      | IMPCT  | 1
+ 003     | _S_P            | 3      | IMPCT  | 1
+ 004     | sigataku        | 4      | IMPCT  | 1
+ 005     | Leeconomy       | 5      | IMPCT  | 1
+ 006     | Tomoteraria     | 7      | IMPCT  | 1
+ 007     | youhey_k        | 8      | IMPCT  | 1
+ 008     | Hakos_Baelz     | 9      | IMPCT  | 1
+ 009     | umedoon         | 10     | IMPCT  | 1
+ 010     | Saanic          | 12     | IMPCT  | 1
+ 011     | SiQ_Queen       | 16     | IMPCT  | 1
+ 012     | KoiFlag         | 20     | IMPCT  | 1
+ 013     | Singer_IU       | 21     | IMPCT  | 1
+ 014     | lLMWON          | 41     | IMPCT  | 1
+ 015     | OhManDungYee    | 44     | IMPCT  | 1
+ 016     | S1XX            | 46     | IMPCT  | 1
+ 017     | Arisu__________ | 50     | IMPCT  | 1
+ 018     | Haunibu         | 54     | IMPCT  | 1

@@ -1,0 +1,9 @@
+ Index   | Name                   | Rank   | Clan   | Rank
+---------+------------------------+--------+--------+--------
+ 001     | chase_onion            | 2      | CRAKD  | 1
+ 002     | O_P_Hacker             | 5      | CRAKD  | 1
+ 003     | _Hector__              | 43     | GIVUP  | 2
+ 004     | Magnan____             | 47     | GIVUP  | 2
+ 005     | GIVUP09                | 52     | GIVUP  | 2
+ 006     | Anarchy___             | 82     | GIVUP  | 2
+ 007     | FISHYatPURDUEwitFALCON | 89     | CRAKD  | 1
