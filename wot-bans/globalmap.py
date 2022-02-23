@@ -47,7 +47,7 @@ ENGLISH_TEXT = '''
 
 If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py).
 
-Below follows a list of the names and related statistics of **{amount_banned}** players disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing. 
+Below follows a list of the names and related statistics of **{amount_banned}** players in the {region} region that were disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing. 
 
 > Using prohibited modifications or violating the game or [event rules]({regulations}) in any way leads to exclusion from the Alley of Fame, thereby preventing violators from receiving rewards.
 > 
@@ -63,7 +63,7 @@ RUSSIAN_TEXT = '''
 
 Если вы хотите проверить код, который я сделал для его создания, сделайте это [здесь](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py).
 
-Ниже приведен список имен и статистика **{amount_banned}** игроков, дисквалифицированных из таблицы лидеров. Они не получат никаких наград, и в зависимости от предыдущих нарушений могут быть навсегда заблокированы от игры.
+Ниже приводится список имен и связанная с ними статистика **{amount_banned}** игроков в регионе {region}, которые были дисквалифицированы из таблицы лидеров. Они не получат никаких наград, и в зависимости от предыдущих нарушений могут быть навсегда заблокированы от игры.
 
 > Использование запрещенных модификаций или нарушение игры или [правил события]({regulations}) каким-либо образом влечет за собой исключение из Аллеи славы, тем самым лишая нарушителей возможности получить награды.
 >
@@ -79,7 +79,7 @@ MANDARIN_TEXT = '''
 
 如果您想查看我为生成此代码而编写的代码，请在 [此处](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py) 进行。
 
-以下是被取消资格的 **{amount_banned}** 玩家的姓名和统计数据列表。他们将不会获得任何奖励，并且根据之前的违规行为可能会被永久禁止参加比赛。
+以下是 {region} 地区被取消排行榜资格的 **{amount_banned}** 玩家的姓名和相关统计数据列表。他们将不会获得任何奖励，并且根据之前的违规行为可能会被永久禁止参加比赛。
 
 > 以任何方式使用禁止的修改或违反游戏或[活动规则]({regulations})导致被排除在名人堂之外，从而阻止违反者获得奖励。
 >
@@ -127,7 +127,7 @@ class GmBans(BanEvaluator):
 
         # Get clans that have 10 + of their members banned
         clans_with_10plus_bans = list(sorted([
-                (f'[{escape_md(clan_tag)}]({stats_link(clan_tag, self.region, is_clan=True)})')
+                (f'[{escape_md(clan_tag)}]({stats_link(clan_tag, self.region, is_clan=True)})', ban_amount)
                 for clan_tag, ban_amount in Counter([v['clan_tag']
                 for v in data.values() if v['clan_tag'] is not None
                 ]).items() if ban_amount >= 10

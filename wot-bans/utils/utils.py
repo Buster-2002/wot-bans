@@ -213,7 +213,7 @@ def upload_as_gist(file: Path, description: str):
     print_message(f'uploading to gist ({url})', start_time)
 
 
-def stats_link(player_or_clan_name: str, region: Region, *, is_clan: bool) -> str:
+def stats_link(player_or_clan_name: str, region: Region, *, is_clan: bool = False) -> str:
     """Generates a link that can links to a website that shows stats about a player or clan
 
     Args:
