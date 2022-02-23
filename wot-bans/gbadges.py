@@ -34,4 +34,9 @@ if __name__ == '__main__':
         formatted.append([str(i).zfill(3), player_data['player_name'], player_data['player_rank'], player_data['clan_tag'], player_data['clan_rank']])
 
     with open(f'globalmap_data/{REGION}/{EVENT}_gbadges.txt', 'w', encoding='utf-8') as file:
-        file.write(tabulate(formatted, headers=['Index', 'Name', 'Rank', 'Clan', 'Rank']))
+        file.write(tabulate(
+            tabular_data=formatted,
+            headers=['Index', 'Name', 'Rank', 'Clan', 'Rank'],
+            tablefmt='presto',
+            numalign='left'
+        ))

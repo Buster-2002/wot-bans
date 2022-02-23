@@ -42,4 +42,9 @@ if __name__ == '__main__':
             formatted.append([str(i).zfill(3), clan_tag, data[0], data[1], f'{(data[0] / data[1]) * 100:.2f}%'])
 
     with open(f'globalmap_data/{REGION}/{EVENT}_tankranking.txt', 'w', encoding='utf-8') as file:
-        file.write(tabulate(formatted, headers=['Rank', 'Clan', 'Tanks', 'Participants', 'Rate']))
+        file.write(tabulate(
+            tabular_data=formatted,
+            headers=['Rank', 'Clan', 'Tanks', 'Participants', 'Rate'],
+            tablefmt='presto',
+            numalign='left'
+        ))
