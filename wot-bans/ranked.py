@@ -196,7 +196,7 @@ def main():
         try:
             region: str = input('What region do you want to check for? \n> ').lower()
             region: Region = Region(region)
-        except KeyError:
+        except ValueError:
             print_message('Invalid region', colour=Fore.RED)
         else:
             break
