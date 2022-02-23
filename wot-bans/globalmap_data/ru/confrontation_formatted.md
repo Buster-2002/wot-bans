@@ -20,7 +20,7 @@
 
 If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py).
 
-Below follows a list of the names and related statistics of **591** players disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing. 
+Below follows a list of the names and related statistics of **591** players in RU region that were disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing. 
 
 > Using prohibited modifications or violating the game or [event rules](https://worldoftanks.ru/en/content/confrontation-regulations/) in any way leads to exclusion from the Alley of Fame, thereby preventing violators from receiving rewards.
 > 
