@@ -9,6 +9,7 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import Dict, Optional, Union
+from discord import player
 
 import requests
 from colorama import Fore, init
@@ -30,7 +31,8 @@ __all__ = (
     'file_operation',
     'escape_md',
     'get_difference',
-    'upload_as_gist'
+    'upload_as_gist',
+    'stats_link'
 )
 
 
@@ -163,7 +165,7 @@ def get_difference(before: Path, after: Path, *, include_new_receivers: bool) ->
     before = file_operation(file=before, op=FileOp.READ)
     after = file_operation(file=after, op=FileOp.READ)
     diff = {k: before.get(k) for k in list(set(before.keys()) - set(after.keys()))}
-    assert len(diff) > 0 # Assert that there are actually banned people, if not - data hasn't updated yet
+    assert len(diff) > 0 # No difference between file keys
 
     if include_new_receivers:
         new_receivers = {}
@@ -184,7 +186,7 @@ def get_difference(before: Path, after: Path, *, include_new_receivers: bool) ->
 
 
 def upload_as_gist(file: Path, description: str):
-    """Uploads a files content to your Github Gists with GITHUB_TOKEN found in .env file
+    """Uploads a files content to your Github Gists using the GITHUB_TOKEN found in .env file
 
     Args:
         file (Path): The file to upload
@@ -209,3 +211,25 @@ def upload_as_gist(file: Path, description: str):
     )
     url = r.json()['html_url']
     print_message(f'uploading to gist ({url})', start_time)
+
+
+def stats_link(player_or_clan_name: str, region: Region, *, is_clan: bool) -> str:
+    """Generates a link that can links to a website that shows stats about a player or clan
+
+    Args:
+        player_or_clan_name (str): The name of the player or clan you want to link
+        region (Region): The region in which the player or clan is active
+        is_clan (bool): Whether it is a clan you want to link
+    Returns:
+        _type_: _description_
+    """
+    domain = 'player'
+    if is_clan is True:
+        domain = 'clan'
+
+    # Wot-life doesn't do asia region stats
+    if region is Region.asia:
+        return f'https://wotlabs.net/sea/{domain}/{player_or_clan_name}'
+
+    else:
+        return f'https://wot-life.com/{region}/{domain}/{player_or_clan_name}/'
