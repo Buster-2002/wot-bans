@@ -277,7 +277,7 @@ def main():
         file = input('What MD file do you want to upload? \nAnswer <filename> > ').strip()
         upload_as_gist(
             Path(f'globalmap_data/{region}/{event}_formatted.md'),
-            f'Player bans for the {event.title()} campaign ({region})'
+            f'Player bans for the {event.title()} campaign ({str(region).upper()})'
         )
 
 if __name__ == '__main__':
