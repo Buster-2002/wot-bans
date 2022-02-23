@@ -2,7 +2,7 @@
 Made by [Buster#5741](https://discord.com/users/764584777642672160)
 
 ## Introduction
-The code found in `wot-bans/globalmap.py` and `wot-bans/ranked.py` are used to generate lists of banned people for global map events and ranked seasons respectively. Using this code I will attempt to do so whenever possible, and publish the lists.
+The code found in `wot-bans/globalmap.py` and `wot-bans/ranked.py` are used to generate lists of banned people for global map events and ranked seasons respectively. Using this code I will attempt to do so whenever possible, and publish the lists. `wot-bans/gbadges.py` is used to generate a list of people who will receive a Global Map Legend badge and decals (top 1% clan and player by FP). `wot-bans/tankranking.py` is used to generate a ranking of clans by how many tanks they got for their members. All scripts require data that is obtained directly from the leaderboard API.
 
 ## Previous lists
 
@@ -18,19 +18,20 @@ The code found in `wot-bans/globalmap.py` and `wot-bans/ranked.py` are used to g
 For the sake of transparency, the raw data is included in this repo. What follows is an explanation on how the data is gathered and created, and under what scheme it is saved.
 
 **Raw Leaderboard data**  
-Gathered by saving the data for each page from the leaderboard API (which is also used on the leaderboards [EU](worldoftanks.eu/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [NA](worldoftanks.com/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [RU](worldoftanks.ru/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [ASIA](worldoftanks.asia/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25))
+Gathered by saving the data obtained from each page of the leaderboard ([EU](worldoftanks.eu/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [NA](worldoftanks.com/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [RU](worldoftanks.ru/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [ASIA](worldoftanks.asia/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25))
 
 `wot-bans/globalmap_data/region/eventname_{month}-{day}_{hour}-{minute}_data.json`  
 `wot-bans/ranked_data/region/eventname_{month}-{day}_{hour}-{minute}_data.json`  
 
 **Raw Banned data**  
-Created by comparing two raw leaderboard data sets (checking which were removed). Note that you need both data from before and after the disqualifications propagated on the API.
+Created by comparing two raw leaderboard data sets (checking which keys were removed). Note that you need both data from before and after the disqualifications propagated on the API.
 
 `wot-bans/globalmap_data/region/eventname_banned.json`  
 `wot-bans/ranked_data/region/eventname_banned.json`  
 
 **Formatted data**  
-Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). I also calculate which clans had 10 + of their members banned, and show those clans in a separate table
+Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). Along with this I also show which clans had X+ members banned, and 
+which players will now receive a tank as result of the bans.
 
 `wot-bans/globalmap_data/region/eventname_formatted.md`  
 `wot-bans/ranked_data/region/eventname_formatted.md`  
