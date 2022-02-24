@@ -12,7 +12,7 @@ The code found in `wot-bans/globalmap.py` and `wot-bans/ranked.py` are used to g
 **Global map**
 - Thunderstorm : [EU](https://gist.github.com/Buster-2002/deb3995455dffb9aab1f0df1d8c67461)
 - Rennaisance : [EU](https://gist.github.com/Buster-2002/d56985709696f0b057ccb90e278d6311)
-- Confrontation : [ASIA](https://gist.github.com/Buster-2002/6bc04d5dac617a996822f4e27c5dee58) - [NA](https://gist.github.com/Buster-2002/d3b827135fc84779cc0267f4c56d33a9) - [RU](https://gist.github.com/Buster-2002/2540640cb2afe7cb92a6600dd9870fdc)
+- Confrontation : [ASIA](https://gist.github.com/Buster-2002/6bc04d5dac617a996822f4e27c5dee58) - [EU](https://gist.github.com/Buster-2002/ec2cee5c54d2f6fc773c66cd83c681d1) - [NA](https://gist.github.com/Buster-2002/d3b827135fc84779cc0267f4c56d33a9) - [RU](https://gist.github.com/Buster-2002/2540640cb2afe7cb92a6600dd9870fdc)
 
 ## Data gathering
 For the sake of transparency, the raw data is included in this repo. What follows is an explanation on how the data is gathered and created, and under what scheme it is saved.
