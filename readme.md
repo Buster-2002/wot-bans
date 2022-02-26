@@ -20,18 +20,18 @@ For the sake of transparency, the raw data is included in this repo. What follow
 **Raw Leaderboard data**  
 Gathered by saving the data obtained from each page of the leaderboard ([EU](worldoftanks.eu/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [NA](worldoftanks.com/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [RU](worldoftanks.ru/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25), [ASIA](worldoftanks.asia/en/clanwars/rating/alley/#wot&aof_rating=accounts&aof_filter=all&aof_page=0&aof_size=25))
 
-`wot-bans/globalmap_data/region/eventname_{month}-{day}_{hour}-{minute}_data.json`  
-`wot-bans/ranked_data/region/eventname_{month}-{day}_{hour}-{minute}_data.json`  
+`wot-bans/globalmap_data/{region}/{eventname}/{month}-{day}_{hour}-{minute}_data.json`  
+`wot-bans/ranked_data/{region}/{eventname}/{month}-{day}_{hour}-{minute}_data.json`  
 
 **Raw Banned data**  
 Created by comparing two raw leaderboard data sets (checking which keys were removed). Note that you need both data from before and after the disqualifications propagated on the API.
 
-`wot-bans/globalmap_data/region/eventname_banned.json`  
-`wot-bans/ranked_data/region/eventname_banned.json`  
+`wot-bans/globalmap_data/{region}/{eventname}/banned.json`  
+`wot-bans/ranked_data/{region}/{eventname}/banned.json`  
 
 **Formatted data**  
 Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). Along with this I also show which clans had X+ members banned, and 
 which players will now receive a tank as result of the bans.
 
-`wot-bans/globalmap_data/region/eventname_formatted.md`  
-`wot-bans/ranked_data/region/eventname_formatted.md`  
+`wot-bans/globalmap_data/{region}/{eventname}/formatted.md`  
+`wot-bans/ranked_data/{region}/{eventname}/formatted.md`  
