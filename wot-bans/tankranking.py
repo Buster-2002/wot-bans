@@ -10,7 +10,7 @@ from tabulate import tabulate
 
 EVENT = input('Event name > ').lower()
 REGION = input('Region > ').lower()
-FILENAME = input('Filename > ')
+FILENAME = input('Post ban data filename > ')
 
 def main(file_path: Path) -> dict:
     tank_ranking = Counter()
@@ -34,14 +34,14 @@ def main(file_path: Path) -> dict:
     return merged
 
 if __name__ == '__main__':
-    tankranking = main(Path(f'globalmap_data/{REGION}/{FILENAME}.json'))
+    tankranking = main(Path(f'globalmap_data/{REGION}/{EVENT}/{FILENAME}.json'))
     formatted = []
 
     for i, (clan_tag, data) in enumerate(tankranking.items(), 1):
         if len(data) == 2: # data[0] is amount of clan members that participated and data[1] is how many got a tank
             formatted.append([str(i).zfill(3), clan_tag, data[0], data[1], f'{(data[0] / data[1]) * 100:.2f}%'])
 
-    with open(f'globalmap_data/{REGION}/{EVENT}_tankranking.txt', 'w', encoding='utf-8') as file:
+    with open(f'globalmap_data/{REGION}/{EVENT}/tankranking.txt', 'w', encoding='utf-8') as file:
         file.write(tabulate(
             tabular_data=formatted,
             headers=['Rank', 'Clan', 'Tanks', 'Participants', 'Rate'],

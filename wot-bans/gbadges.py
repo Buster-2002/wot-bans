@@ -9,7 +9,7 @@ from tabulate import tabulate
 
 EVENT = input('Event name > ').lower()
 REGION = input('Region > ').lower()
-FILENAME = input('Filename > ')
+FILENAME = input('Post ban data filename > ')
 CLAN_AMOUNT = int(input('Clan amount > '))
 PLAYER_AMOUNT = int(input('Player amount > '))
 
@@ -27,13 +27,13 @@ def main(file_path: Path) -> dict:
     return gbadge_gamers
 
 if __name__ == '__main__':
-    gbadges = main(Path(f'globalmap_data/{REGION}/{FILENAME}.json'))
+    gbadges = main(Path(f'globalmap_data/{REGION}/{EVENT}/{FILENAME}.json'))
     formatted = []
 
     for i, (player_id, player_data) in enumerate(gbadges.items(), 1):
         formatted.append([str(i).zfill(3), player_data['player_name'], player_data['player_rank'], player_data['clan_tag'], player_data['clan_rank']])
 
-    with open(f'globalmap_data/{REGION}/{EVENT}_gbadges.txt', 'w', encoding='utf-8') as file:
+    with open(f'globalmap_data/{REGION}/{EVENT}/gbadges.txt', 'w', encoding='utf-8') as file:
         file.write(tabulate(
             tabular_data=formatted,
             headers=['Index', 'Name', 'Rank', 'Clan', 'Rank'],
