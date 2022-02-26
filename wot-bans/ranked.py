@@ -211,20 +211,22 @@ def main():
         data = evaluator.get_leaderboard()
         file_operation(
             data=data,
-            file=Path(f'ranked_data/{region}/{season_id}_{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
+            file=Path(f'ranked_data/{region}/{season_id}/{datetime.now().strftime("%m-%d_%H-%M")}_data.json'),
             op=FileOp.WRITE
         )
 
     answer = input('Do you want to compare data and get banned players? \ny/n > ').strip()
     if answer.lower() in YES:
         filename1, filename2 = input('Which JSON files do you want to compare? \nAnswer <filename1> <filename2> > ').split()
-        banned = get_difference(
-            Path(f'ranked_data/{region}/{filename1}.json'),
-            Path(f'ranked_data/{region}/{filename2}.json')
+        banned, new_receivers = get_difference(
+            Path(f'ranked_data/{region}/{season_id}/{filename1}.json'),
+            Path(f'ranked_data/{region}/{season_id}/{filename2}.json'),
+            include_new_receivers=True
         )
+        evaluator.new_receivers = new_receivers
         file_operation(
             data=banned,
-            file=Path(f'ranked_data/{region}/{season_id}_banned.json'),
+            file=Path(f'ranked_data/{region}/{season_id}/banned.json'),
             op=FileOp.WRITE
         )
 
@@ -232,12 +234,20 @@ def main():
     if answer.lower() in YES:
         file = input('What JSON file do you want to format? \nAnswer <filename> > ').strip()
         formatted = evaluator.format_to_md(
-            Path(f'ranked_data/{region}/{file}.json')
+            Path(f'ranked_data/{region}/{season_id}/{file}.json')
         )
         file_operation(
             data=formatted,
-            file=Path(f'ranked_data/{region}/{season_id}_formatted.md'),
+            file=Path(f'ranked_data/{region}/{season_id}/formatted.md'),
             op=FileOp.WRITE
+        )
+
+    answer = input('Do you want to upload formatted data to a Github Gist? \ny/n ').strip()
+    if answer.lower() in YES:
+        file = input('What MD file do you want to upload? \nAnswer <filename> > ').strip()
+        upload_as_gist(
+            Path(f'ranked_data/{region}/{season_id}/formatted.md'),
+            f'Player bans for the {season_id.title()} campaign ({str(region).upper()})'
         )
 
 if __name__ == '__main__':
