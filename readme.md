@@ -2,7 +2,13 @@
 Made by [Buster#5741](https://discord.com/users/764584777642672160)
 
 ## Introduction
-The code found in `wot-bans/globalmap.py` and `wot-bans/ranked.py` are used to generate lists of banned people for global map events and ranked seasons respectively. Using this code I will attempt to do so whenever possible, and publish the lists. `wot-bans/gbadges.py` is used to generate a list of people who will receive a Global Map Legend badge and decals (top 1% clan and player by FP). `wot-bans/tankranking.py` is used to generate a ranking of clans by how many tanks they got for their members. All scripts require data that is obtained directly from the leaderboard API.
+I will attempt to upload ban lists for each season of ranked and each global map event for each nation. **Use of the code, data and these lists falls under MIT license and are therefore free to use in any way you want.**
+
+## Uses
+- [`wot-bans/globalmap.py`](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py): Get/compare/format (ban) data for WoT Global Map events 
+- [`wot-bans/ranked.py`](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/ranked.py): Get/compare/format (ban) data for WoT Ranked map events 
+- [`wot-bans/tankranking.py`](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/tankranking.py): Rank clans by amounts of reward tanks for WoT Global Map events
+- [`wot-bans/gbadges.py`](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/gbadges.py): List players who receive a GML badge for WoT Global Map events
 
 ## Previous lists
 
@@ -24,7 +30,7 @@ Gathered by saving the data obtained from each page of the leaderboard ([EU](wor
 `wot-bans/ranked_data/{region}/{eventname}/{month}-{day}_{hour}-{minute}_data.json`  
 
 **Raw Banned data**  
-Created by comparing two raw leaderboard data sets (checking which keys were removed). Note that you need both data from before and after the disqualifications propagated on the API.
+Created by comparing two raw leaderboard data sets (checking which account ids (the keys) were removed). Note that you need both data from before and after the disqualifications propagated on the API.
 
 `wot-bans/globalmap_data/{region}/{eventname}/banned.json`  
 `wot-bans/ranked_data/{region}/{eventname}/banned.json`  
