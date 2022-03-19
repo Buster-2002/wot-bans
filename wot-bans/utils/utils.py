@@ -30,6 +30,7 @@ import os
 import re
 import time
 from abc import ABC, abstractmethod
+from contextlib import suppress
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional, Union
@@ -72,10 +73,10 @@ The raw data and the code used is available in the GitHub repo [here](https://gi
 Below follows a list of the names and related statistics of **{amount_banned}** players in the {region} region that were disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing.
 
 > Using prohibited modifications or violating the game or [{title} rules]({regulations}) in any way leads to exclusion from the Alley of Fame, thereby preventing violators from receiving rewards.
-> 
+>
 > \- *World of Tanks Fair Play Policy*
 
-Also check out:  
+Also check out:
 - [Global Map Legend badge receivers]({gbadges_url})
 - [Clan ranking by reward tanks]({tankranking_url})
 
@@ -98,7 +99,7 @@ GM_RUSSIAN = '''
 - [получатели значков Global Map Legend]({gbadges_url})
 - [Рейтинг клана по призовым танкам]({tankranking_url})
 
-Обратите внимание, что я могу узнать только тех забаненных игроков, которые были в таблице лидеров на момент окончания события. 
+Обратите внимание, что я могу узнать только тех забаненных игроков, которые были в таблице лидеров на момент окончания события.
 '''.strip()
 GM_MANDARIN = '''
 # {logo} {title} 活动 ({region}) 的玩家禁令
@@ -145,7 +146,7 @@ RANKED_RUSSIAN = '''
 Обратите внимание, что я могу знать только забаненных игроков, которые были в таблице лидеров на момент окончания event_id.
 
 ## Топ 5 кланов с большинством забаненных членов
-{most_banned_clans} 
+{most_banned_clans}
 '''.strip()
 RANKED_MANDARIN = '''
 # 排名第 {season} 赛季的玩家封禁（{region}）
@@ -159,7 +160,7 @@ RANKED_MANDARIN = '''
 请注意，我只能知道 event_id 结束时在排行榜上的被禁玩家。
 
 ## 被禁止成员最多的前 5 个部落
-{most_banned_clans} 
+{most_banned_clans}
 '''.strip()
 
 TRANSLATIONS = {
@@ -229,6 +230,9 @@ def file_operation(
     Returns:
         Optional[dict]: The file contents in json form
     '''
+    with suppress(FileExistsError):
+        Path(file).parents[0].mkdir(parents=True, exist_ok=True)
+
     with open(file, op.value, encoding='utf-8') as f:
         if op == FileOp.READ:
             if as_json:
@@ -367,7 +371,7 @@ def get_description(region: Region, ban_type: BanType) -> str:
 
     Returns:
         str: The description for this list
-    """    
+    """
     if ban_type is BanType.GLOBALMAP:
         english = GM_ENGLISH
     elif ban_type is BanType.RANKED:
