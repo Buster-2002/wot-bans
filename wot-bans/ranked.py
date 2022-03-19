@@ -1,6 +1,29 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-'''ranked_bans.py: Gets ranked leaderboards and formats final data to applicable markdown'''
+'''ranked_bans.py: Gets ranked leaderboards and formats final data to applicable markdown
+
+The MIT License (MIT)
+
+Copyright (c) 2021-present Buster
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+'''
 
 import time
 from collections import Counter
@@ -20,13 +43,29 @@ __license__ = 'MIT'
 init(autoreset=True)
 SESSION = requests.Session()
 SESSION.headers = {'x-requested-with': 'XMLHttpRequest'}
-YES = {'yes', 'y', 'true', 't', '1', 'enable', 'on'}
+GOLD_HEADER = '''
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png" alt="goldleaguebadge" width="30"/> Gold League
 
+| Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
+|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
+'''.strip()
+SILVER_HEADER = '''
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png" alt="silverleaguebadge" width="30"/> Silver League
+
+| Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
+|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
+'''.strip()
+BRONZE_HEADER = '''
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png" alt="bronzeleaguebadge" width="30"/> Bronze League
+
+| Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
+|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
+'''.strip()
 
 class RankedBans(BanEvaluator):
     def __init__(self, region: Region, season_id: str):
         self.region = region
-        self.leaderboard_url = f"https://worldoftanks.{'com' if region is Region.north_america else str(region)}/parla/seasons/leaderboard/?season_id={season_id}&limit=20&offset={{}}"
+        self.leaderboard_url = f"https://worldoftanks.{'com' if region is Region.NORTH_AMERICA else str(region)}/parla/seasons/leaderboard/?season_id={season_id}&limit=20&offset={{}}"
 
         self.season_id = season_id
         self.gold_league_range: range = None
@@ -65,7 +104,7 @@ class RankedBans(BanEvaluator):
             'silver': [],
             'bronze': []
         }
-        start_time = time.perf_counter()
+        formatted, start_time, nl = [], time.perf_counter(), '\n'
         data = file_operation(file=file, op=FileOp.READ)
 
         # Check if league ranges have been manually set, if not set them using API
@@ -80,16 +119,16 @@ class RankedBans(BanEvaluator):
         ))
 
         # Get top 5 clans with most banned members in this list
-        most_banned_clans = '\n'.join([
-            f'**{i}:** [{c}](https://wot-life.com/eu/clan/{c}/) ({b} bans)  '
-            for i, (c, b) in enumerate(Counter([u['clan_tag']
-            for u in data.values() if u['clan_tag'] is not None
+        most_banned_clans = nl.join([
+            f'**{i}:** {stats_link(clan_tag, self.region, is_clan=True)} ({ban_amount} bans)  '
+            for i, (clan_tag, ban_amount) in enumerate(Counter([v['clan_tag']
+            for v in data.values() if v['clan_tag'] is not None
         ]).most_common(5), 1)])
 
         # Format banned players and assign them to their league
         for i, v in enumerate(data.values(), 1):
             rank = v['player_rank']
-            data_string = f"""| {i} | [{escape_md(v['player_name'])}](https://en.wot-life.com/eu/player/{v['player_name']}/) | {intcomma(rank)} | {f"[{escape_md(v['clan_tag'])}](https://wot-life.com/eu/clan/{v['clan_tag']}/)" if v['clan_tag'] else 'No Clan'} | {intcomma(v['battles_played'])} | {intcomma(v['avg_exp'])} | {intcomma(v['avg_dmg'])} | {intcomma(v['avg_assist'])} | {v['effectiveness']}% | {v['chevrons']} |"""
+            data_string = f"""| {i} | {stats_link(v['player_name'], self.region)} | {intcomma(rank)} | {stats_link(v['clan_tag'], self.region, is_clan=True)}| {intcomma(v['battles_played'])} | {intcomma(v['avg_exp'])} | {intcomma(v['avg_dmg'])} | {intcomma(v['avg_assist'])} | {v['effectiveness']}% | {v['chevrons']} |"""
 
             if rank in self.gold_league_range:
                 banned_players['gold'].append(data_string)
@@ -98,41 +137,27 @@ class RankedBans(BanEvaluator):
             elif rank in self.bronze_league_range:
                 banned_players['bronze'].append(data_string)
 
-        nl = '\n'
-        formatted = f'''
-# Player bans for season {self.season_id} of ranked ({str(self.region).upper()})
+        formatted.append(get_description(self.region, BanType.RANKED).format(
+            season=self.season_id,
+            region=str(self.region).upper(),
+            author=f'[{__author__}](https://discord.com/users/764584777642672160)',
+            amount_banned=len(data.keys()),
+            most_banned_clans=most_banned_clans
+        ))
 
-## General
+        formatted.append(nl)
 
-This list was made by [{__author__}](https://discord.com/users/764584777642672160).
-If you wish to check out the code that I made to generate this, do so [here](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/ranked.py).
+        # Add the gold league bans rows
+        formatted.append(GOLD_HEADER)
+        formatted.append(nl.join(banned_players['gold']))
 
-This list contains a total of **{len(data.keys())}** banned players. Note that I am only able to know the banned players who were on the leaderboard
-at the time of the event ending.
+        # Add the silver league bans rows
+        formatted.append(SILVER_HEADER)
+        formatted.append(nl.join(banned_players['silver']))
 
-## Top 5 clans with most members banned
-{most_banned_clans}
-
-## Banned players
-
-### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png" alt="goldleaguebadge" width="30"/> Gold League
-
-| Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
-|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
-{nl.join(banned_players['gold'])}
-
-### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png" alt="silverleaguebadge" width="30"/> Silver League
-
-| Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
-|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
-{nl.join(banned_players['silver'])}
-
-### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png" alt="bronzeleaguebadge" width="30"/> Bronze League
-
-| Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
-|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
-{nl.join(banned_players['bronze'])}
-        '''
+        # Add the bronze league bans rows
+        formatted.append(BRONZE_HEADER)
+        formatted.append(nl.join(banned_players['bronze']))
 
         print_message('formatting to MarkDown', start_time)
         return formatted
@@ -149,6 +174,7 @@ at the time of the event ending.
 
         while True:
             r = SESSION.get(self.leaderboard_url.format(offset)).json()
+            print(r)
             data = r['data']
 
             if r.get('status') == 'ok':
