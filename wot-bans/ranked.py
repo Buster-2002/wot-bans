@@ -160,7 +160,7 @@ class RankedBans(BanEvaluator):
         formatted.append(nl.join(banned_players['bronze']))
 
         print_message('formatting to MarkDown', start_time)
-        return formatted
+        return nl.join(formatted)
 
 
     def get_leaderboard(self) -> Dict[str, Dict[str, Union[str, int]]]:
@@ -182,7 +182,7 @@ class RankedBans(BanEvaluator):
                 for entry in data['results']:
                     season = entry.get('season', {})
                     leaderboard[entry['spa_id']] = ({ # Key is player ID
-                        'clan_tag': entry.get('clan_info', {}).get('tag'),
+                        'clan_tag': entry['clan_info']['tag'] or None,
                         'player_name': entry['nickname'],
                         'player_rank': entry['position'],
                         'is_suspended': entry['is_suspended'],
