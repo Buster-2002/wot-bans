@@ -174,7 +174,6 @@ class RankedBans(BanEvaluator):
 
         while True:
             r = SESSION.get(self.leaderboard_url.format(offset)).json()
-            print(r)
             data = r['data']
 
             if r.get('status') == 'ok':
