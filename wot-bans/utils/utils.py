@@ -76,9 +76,9 @@ Below follows a list of the names and related statistics of **{amount_banned}** 
 >
 > \- *World of Tanks Fair Play Policy*
 
-Also check out:
-- [Global Map Legend badge receivers]({gbadges_url})
-- [Clan ranking by reward tanks]({tankranking_url})
+Also check out:  
+- [Global Map Legend badge receivers]({gbadges_url})  
+- [Clan ranking by reward tanks]({tankranking_url})  
 
 Note that I am only able to know the banned players who were on the leaderboard at the time of the event_id ending.
 '''.strip()
@@ -95,9 +95,9 @@ GM_RUSSIAN = '''
 >
 > \- *Политика честной игры в World of Tanks*
 
-Также проверьте:
-- [получатели значков Global Map Legend]({gbadges_url})
-- [Рейтинг клана по призовым танкам]({tankranking_url})
+Также проверьте:  
+- [получатели значков Global Map Legend]({gbadges_url})  
+- [Рейтинг клана по призовым танкам]({tankranking_url})  
 
 Обратите внимание, что я могу узнать только тех забаненных игроков, которые были в таблице лидеров на момент окончания события.
 '''.strip()
@@ -114,9 +114,9 @@ GM_MANDARIN = '''
 >
 > \- *坦克世界公平竞赛政策*
 
-另请查看：
-- [全球地图图例徽章接收器]({gbadges_url})
-- [战队奖励坦克排名]({tankranking_url})
+另请查看:  
+- [全球地图图例徽章接收器]({gbadges_url})  
+- [战队奖励坦克排名]({tankranking_url})  
 
 请注意，我只能知道活动结束时在排行榜上的被禁玩家。
 '''.strip()
