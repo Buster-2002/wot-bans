@@ -65,6 +65,7 @@ __all__ = (
 YES = {'yes', 'y', 'true', 't', '1', 'enable', 'on'}
 GM_ENGLISH = '''
 # Player bans for the {logo} {title} campaign ({region})
+
 *Made by {author}*
 
 ## General
@@ -84,6 +85,7 @@ Note that I am only able to know the banned players who were on the leaderboard 
 '''.strip()
 GM_RUSSIAN = '''
 # Блокировка игроков в кампании {logo} {title} ({region})
+
 *Сделано {author}*
 
 ## Общий
@@ -103,6 +105,7 @@ GM_RUSSIAN = '''
 '''.strip()
 GM_MANDARIN = '''
 # {logo} {title} 活动 ({region}) 的玩家禁令
+
 *由{author}制作*
 
 ## 一般的
@@ -122,6 +125,7 @@ GM_MANDARIN = '''
 '''.strip()
 RANKED_ENGLISH = '''
 # Player bans for season {season} of ranked ({region})
+
 *Made by {author}*
 
 ## General
@@ -136,6 +140,7 @@ Note that I am only able to know the banned players who were on the leaderboard 
 '''.strip()
 RANKED_RUSSIAN = '''
 # Блокировка игроков на сезон {season} в рейтинге ({region})
+
 *Сделано {author}*
 
 ## Общий
@@ -150,6 +155,7 @@ RANKED_RUSSIAN = '''
 '''.strip()
 RANKED_MANDARIN = '''
 # 排名第 {season} 赛季的玩家封禁（{region}）
+
 *由{author}制作*
 
 ＃＃ 一般的
@@ -385,12 +391,16 @@ def get_description(region: Region, ban_type: BanType) -> str:
         return f'''
 <details open>
 <summary>English</summary>
+
 {english}
+
 </details>
 
 <details>
 <summary>{summary}</summary>
+
 {translated_text}
+
 </details>
         '''.strip()
 
