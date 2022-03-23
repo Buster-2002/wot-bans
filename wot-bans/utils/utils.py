@@ -382,14 +382,15 @@ def get_description(region: Region, ban_type: BanType) -> str:
 
     else:
         translated_text, summary = TRANSLATIONS[ban_type][region]
-        return f'''<details open>
-        <summary>English</summary>
-        {english}
-        </details>
+        return f'''
+<details open>
+<summary>English</summary>
+{english}
+</details>
 
-        <details>
-        <summary>{summary}</summary>
-        {translated_text}
-        </details>
+<details>
+<summary>{summary}</summary>
+{translated_text}
+</details>
         '''.strip()
 
