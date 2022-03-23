@@ -44,19 +44,19 @@ init(autoreset=True)
 SESSION = requests.Session()
 SESSION.headers = {'x-requested-with': 'XMLHttpRequest'}
 GOLD_HEADER = '''
-### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png" alt="goldleaguebadge" width="30"/> Gold League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-first.png" alt="goldleaguebadge" width="30"/> Gold League (top {})
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
 '''.strip()
 SILVER_HEADER = '''
-### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png" alt="silverleaguebadge" width="30"/> Silver League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-second.png" alt="silverleaguebadge" width="30"/> Silver League (top {})
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
 '''.strip()
 BRONZE_HEADER = '''
-### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png" alt="bronzeleaguebadge" width="30"/> Bronze League
+### <img src="https://eu-wotp.wgcdn.co/static/5.97.0_abe061/wotp_static/img/hall_of_fame/frontend/scss/ribbon/img/league-third.png" alt="bronzeleaguebadge" width="30"/> Bronze League (top {})
 
 | Index          | Player         | Player Rank    | Clan           | Battles Played | Average XP     | Average Damage | Average Assist | Performance    | Chevrons       |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
@@ -76,9 +76,9 @@ class RankedBans(BanEvaluator):
     def set_ranked_league_ranges(self):
         '''Sets the ranges of player ranks for each Ranked League
 
-        Top 10% -> Gold League
-        Top % -> Silver League
-        Top % -> Bronze League
+        Top 10% participants -> Gold League
+        Top 20% participants -> Silver League
+        Top 50% participants -> Bronze League
         '''
         start_time = time.perf_counter()
         r = SESSION.get(self.leaderboard_url.format(1)).json()
@@ -148,15 +148,19 @@ class RankedBans(BanEvaluator):
         formatted.append(nl)
 
         # Add the gold league bans rows
-        formatted.append(GOLD_HEADER)
+        formatted.append(GOLD_HEADER.format(len(self.gold_league_range) - 1))
         formatted.append(nl.join(banned_players['gold']))
+        
+        formatted.append(nl)
 
         # Add the silver league bans rows
-        formatted.append(SILVER_HEADER)
+        formatted.append(SILVER_HEADER.format(len(self.silver_league_range) - 1))
         formatted.append(nl.join(banned_players['silver']))
 
+        formatted.append(nl)
+
         # Add the bronze league bans rows
-        formatted.append(BRONZE_HEADER)
+        formatted.append(BRONZE_HEADER.format(len(self.bronze_league_range) - 1))
         formatted.append(nl.join(banned_players['bronze']))
 
         print_message('formatting to MarkDown', start_time)
@@ -243,12 +247,11 @@ def main():
     answer = input('Do you want to compare data and get banned players? \ny/n > ').strip()
     if answer.lower() in YES:
         filename1, filename2 = input('Which JSON files do you want to compare? \nAnswer <filename1> <filename2> > ').split()
-        banned, new_receivers = get_difference(
+        banned = get_difference(
             Path(f'ranked_data/{region}/{season_id}/{filename1}.json'),
             Path(f'ranked_data/{region}/{season_id}/{filename2}.json'),
-            include_new_receivers=True
+            include_new_receivers=False
         )
-        evaluator.new_receivers = new_receivers
         file_operation(
             data=banned,
             file=Path(f'ranked_data/{region}/{season_id}/banned.json'),
@@ -272,7 +275,7 @@ def main():
         file = input('What MD file do you want to upload? \nAnswer <filename> > ').strip()
         upload_as_gist(
             Path(f'ranked_data/{region}/{season_id}/formatted.md'),
-            f'Player bans for the {season_id.title()} campaign ({str(region).upper()})'
+            f'Player bans for season {season_id.title()} of ranked ({str(region).upper()})'
         )
 
 if __name__ == '__main__':
