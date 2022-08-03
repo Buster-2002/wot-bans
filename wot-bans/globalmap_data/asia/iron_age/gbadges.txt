@@ -1,0 +1,13 @@
+ Index   | Name            | Rank   | Clan   | Rank
+---------+-----------------+--------+--------+--------
+ 001     | Speed___        | 2      | SEKAI  | 1
+ 002     | XichLoNuoc_LT   | 3      | SEKAI  | 1
+ 003     | _S_P            | 4      | SEKAI  | 1
+ 004     | IZABAN          | 5      | SEKAI  | 1
+ 005     | _G_H            | 6      | SEKAI  | 1
+ 006     | __MYSTOGAN__    | 8      | SEKAI  | 1
+ 007     | Kitasan_BIack   | 10     | SEKAI  | 1
+ 008     | JS_             | 14     | SEKAI  | 1
+ 009     | RI7PMEISTER     | 17     | SEKAI  | 1
+ 010     | Lee_Shawran     | 28     | SEKAI  | 1
+ 011     | Haguro_Arpeggio | 39     | SEKAI  | 1
