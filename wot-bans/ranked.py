@@ -121,9 +121,11 @@ class RankedBans(BanEvaluator):
         # Get top 5 clans with most banned members in this list
         most_banned_clans = nl.join([
             f'**{i}:** {stats_link(clan_tag, self.region, is_clan=True)} ({ban_amount} bans)  '
-            for i, (clan_tag, ban_amount) in enumerate(Counter([v['clan_tag']
-            for v in data.values() if v['clan_tag'] is not None
-        ]).most_common(5), 1)])
+            for i, (clan_tag, ban_amount) in
+            enumerate(Counter([
+                v['clan_tag'] for v in data.values() if v['clan_tag'] is not None
+            ]).most_common(5), 1)
+        ])
 
         # Format banned players and assign them to their league
         for i, v in enumerate(data.values(), 1):
@@ -150,7 +152,7 @@ class RankedBans(BanEvaluator):
         # Add the gold league bans rows
         formatted.append(GOLD_HEADER.format(len(self.gold_league_range) - 1))
         formatted.append(nl.join(banned_players['gold']))
-        
+
         formatted.append(nl)
 
         # Add the silver league bans rows
@@ -206,7 +208,8 @@ class RankedBans(BanEvaluator):
                 offset += 20
 
             else:
-                print_message(f'API error (HTTP {r["error"]["code"]}), trying again in 5s...', colour=Fore.RED)
+                error_code = r.get('error').get('code') or 'N/A'
+                print_message(f'API error (HTTP {error_code}), trying again in 5s...', colour=Fore.RED)
                 time.sleep(5)
 
             if not r['data']['results']:

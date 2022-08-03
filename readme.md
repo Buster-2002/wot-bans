@@ -37,8 +37,7 @@ Created by comparing two raw leaderboard data sets (checking which account ids (
 `wot-bans/ranked_data/{region}/{eventname}/banned.json`  
 
 **Formatted data**  
-Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). Along with this I also show which clans had X+ members banned, and 
-which players will now receive a tank as result of the bans if it is a Global Map ban list.
+Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). Along with this I also show which clans had X+ members banned, and which players will now receive a tank as result of the bans if it is a Global Map ban list.
 
 `wot-bans/globalmap_data/{region}/{eventname}/formatted.md`  
 `wot-bans/ranked_data/{region}/{eventname}/formatted.md`  

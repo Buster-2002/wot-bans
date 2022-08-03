@@ -25,11 +25,12 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 '''
 
+import json
 import time
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 
 import requests
 from colorama import Fore, init
@@ -68,11 +69,25 @@ class GmBans(BanEvaluator):
         self.region = region
         self.link_region = 'com' if region is Region.NORTH_AMERICA else str(region)
         self.leaderboard_url = f"https://worldoftanks.{self.link_region}/en/clanwars/rating/alley/users/?event_id={{0}}&front_id={{1}}&page_size=100&page={{2}}"
+        self.moderator_names = self.get_moderator_names(region)
 
         self.front_id = front_id
         self.event_id = event_id
-        self.new_receivers: Optional[dict] = None
+        self.new_receivers: Optional[dict] = dict() # Only applies when assessing which players receive a tank after bans
 
+
+    def get_moderator_names(self, region: Region) -> List[str]:
+        """Returns the known moderator/employee in game WoT names for this region
+
+        Args:
+            region (Region): The region to get the moderator/employee names for
+
+        Returns:
+            List[str]: The moderator/employee WoT names
+        """
+        with open('employees.json', 'r', encoding='utf-8') as file:
+            json_data = json.load(file)
+            return json_data[str(region)]
 
     def format_to_md(self, filename: Path) -> str:
         '''Formats finalized data to text using MarkDown. Suitable
@@ -83,7 +98,7 @@ class GmBans(BanEvaluator):
         Returns:
             str: The formatted data
         '''
-        formatted, start_time, nl = [], time.perf_counter(), '\n'
+        formatted, is_employee_banned, start_time, nl = [], False, time.perf_counter(), '\n'
         data = file_operation(file=filename, op=FileOp.READ)
 
         # Sort banned players by their rank respectively
@@ -96,9 +111,11 @@ class GmBans(BanEvaluator):
         # Get clans that have 10 + of their members banned
         clans_with_10plus_bans = list(sorted([
                 (stats_link(clan_tag, self.region, is_clan=True), ban_amount)
-                for clan_tag, ban_amount in Counter([v['clan_tag']
-                for v in data.values() if v['clan_tag'] is not None
-                ]).items() if ban_amount >= 10
+                for clan_tag, ban_amount in
+                Counter([
+                    v['clan_tag'] for v in data.values() if v['clan_tag'] is not None
+                ]).items()
+                if ban_amount >= 10
             ],
             key=lambda item: item[1],
             reverse=True
@@ -122,21 +139,45 @@ class GmBans(BanEvaluator):
         # Add the most clan ban rows
         formatted.append(CLAN_BAN_HEADER)
         for i, (clan_name, ban_amount) in enumerate(clans_with_10plus_bans, 1):
-            formatted.append(f'| {i} | {clan_name} | {ban_amount} |')
+            entry = f'| {i} | {clan_name} | {ban_amount} |'
+            formatted.append(entry)
 
         formatted.append(nl)
 
         # Add the player ban rows
         formatted.append(PLAYER_BAN_HEADER)
         for i, v in enumerate(data.values(), 1):
-            formatted.append(f'''| {i} | {stats_link(v['player_name'], self.region)} | {intcomma(v['player_rank'])} | {stats_link(v['clan_tag'], self.region, is_clan=True)} | {intcomma(v['clan_rank']) or 'N/A'} | {intcomma(v['player_fame_points'])} | {v['player_battles_count']} |''')
+            name = stats_link(v['player_name'], self.region)
+
+            # Add asterix if the "banned" player is part of WG staff team for region
+            if v['player_name'] in self.moderator_names:
+                is_employee_banned = True
+                name = '\* ' + name
+
+            entry = [
+                str(i),
+                name,
+                intcomma(v['player_rank']),
+                stats_link(v['clan_tag'], self.region, is_clan=True),
+                intcomma(v['clan_rank']) or 'N/A',
+                intcomma(v['player_fame_points']),
+                intcomma(v['player_battles_count'])
+            ]
+
+            formatted.append('| ' + ' | '.join(entry) + ' |')
+
+        formatted.append(nl)
+
+        if is_employee_banned is True:
+            formatted.append('\*: Wargaming staff members who removed themselves from the leaderboard as to not "steal" tanks from regular players.')
 
         formatted.append(nl)
 
         # Add new receivers rows
         formatted.append(NEW_RECEIVERS_HEADER)
         for i, v in enumerate(self.new_receivers.values(), 1):
-            formatted.append(f'''| {i} | {stats_link(v['player_name'], self.region)} | from {v['old_rank']} to {v['new_rank']} | ''')
+            entry = f'''| {i} | {stats_link(v['player_name'], self.region)} | from {v['old_rank']} to {v['new_rank']} | '''
+            formatted.append(entry)
 
         print_message('formatting to MarkDown', start_time)
         return nl.join(formatted)
@@ -180,7 +221,8 @@ class GmBans(BanEvaluator):
                 break
 
             else:
-                print_message(f'API error (HTTP {r["error"]["code"]}), trying again in 5s...', colour=Fore.RED)
+                error_code = r.get('error').get('code') or 'N/A'
+                print_message(f'API error (HTTP {error_code}), trying again in 5s...', colour=Fore.RED)
                 time.sleep(5)
 
         print_message('getting leaderboard pages', start_time)
@@ -190,7 +232,7 @@ class GmBans(BanEvaluator):
 def main():
     '''Determining what to do and putting the GmBans class to work
     '''
-    event_id = input('What is the events name? \n> ').lower()
+    event_id = input('What is the events name? \n> ').lower().replace(' ', '_')
 
     while True:
         try:
