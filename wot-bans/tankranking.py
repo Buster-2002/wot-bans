@@ -34,7 +34,7 @@ from tabulate import tabulate
 __author__ = 'Buster#5741'
 __license__ = 'MIT'
 
-EVENT = input('Event name > ').lower()
+EVENT = input('Event name > ').lower().replace(' ', '_')
 REGION = input('Region > ').lower()
 FILENAME = input('Post ban data filename > ')
 
