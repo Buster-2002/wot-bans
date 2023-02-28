@@ -124,7 +124,7 @@ class GmBans(BanEvaluator):
         # Format the markdown with translation
         base_data_url = f'https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap_data/{self.region}/{self.event_id}/'
         formatted.append(get_description(self.region, BanType.GLOBALMAP).format(
-            title=self.event_id.title(),
+            title=self.event_id.replace('_', ' ').title(),
             region=str(self.region).upper(),
             author=f'[{__author__}](https://discord.com/users/764584777642672160)',
             amount_banned=len(data.keys()),
@@ -190,7 +190,9 @@ class GmBans(BanEvaluator):
             Dict[str, Dict[str, int]]: A dict of player IDs with data currently participating in event_id
                                        Includes player id, clan id, fame points and battles
         '''
-        leaderboard, start_time, current_page = dict(), time.perf_counter(), int()
+        leaderboard = {}
+        start_time = time.perf_counter()
+        current_page = 0
 
         while True:
             r = SESSION.get(
@@ -202,9 +204,10 @@ class GmBans(BanEvaluator):
             ).json()
 
             if r.get('status') == 'ok':
-                print_message(f'Received page {current_page + 1}/{r["pages_count"]}', colour=Fore.CYAN)
+                print_message(f'Received page {current_page + 1}/{r["pages_count"]}')
 
                 for entry in r['accounts_ratings']:
+                    print(entry)
                     leaderboard[entry['id']] = ({ # Key is player ID
                         'clan_tag': entry.get('clan', {}).get('tag'),
                         'clan_rank': entry.get('clan_rank'),
@@ -217,11 +220,11 @@ class GmBans(BanEvaluator):
 
                 current_page += 1
 
-            elif r.get('code') == 'RATING_NOT_FOUND':
-                break
+                if current_page >= r['pages_count']:
+                    break
 
             else:
-                error_code = r.get('error').get('code') or 'N/A'
+                error_code = r.get('code', 'N/A')
                 print_message(f'API error (HTTP {error_code}), trying again in 5s...', colour=Fore.RED)
                 time.sleep(5)
 
@@ -229,15 +232,15 @@ class GmBans(BanEvaluator):
         return leaderboard
 
 
-def main():
+def main() -> None:
     '''Determining what to do and putting the GmBans class to work
     '''
     event_id = input('What is the events name? \n> ').lower().replace(' ', '_')
 
     while True:
         try:
-            region: str = input('What region do you want to check for? \n> ').lower()
-            region: Region = Region(region)
+            region = input('What region do you want to check for? \n> ').lower()
+            region = Region(region)
         except ValueError:
             print_message('Invalid region', colour=Fore.RED)
         else:

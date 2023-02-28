@@ -176,7 +176,9 @@ class RankedBans(BanEvaluator):
             Dict[str, Dict[str, int]]: A dict of player IDs with data currently participating in event
                                        Includes player id/name/rank, battles played, average xp/damage/assist, effectiveness and chevrons earned
         '''
-        leaderboard, start_time, offset = dict(), time.perf_counter(), int()
+        leaderboard = {}
+        start_time = time.perf_counter()
+        offset = 0
 
         while True:
             r = SESSION.get(self.leaderboard_url.format(offset)).json()
@@ -208,7 +210,7 @@ class RankedBans(BanEvaluator):
                 offset += 20
 
             else:
-                error_code = r.get('error').get('code') or 'N/A'
+                error_code = r.get('code', 'N/A')
                 print_message(f'API error (HTTP {error_code}), trying again in 5s...', colour=Fore.RED)
                 time.sleep(5)
 
@@ -219,15 +221,15 @@ class RankedBans(BanEvaluator):
         return leaderboard
 
 
-def main():
+def main() -> None:
     '''Determining what to do and putting the RankedBans class to work
     '''
     season_id = input('What is the seasons ID? \n> ').lower()
 
     while True:
         try:
-            region: str = input('What region do you want to check for? \n> ').lower()
-            region: Region = Region(region)
+            region = input('What region do you want to check for? \n> ').lower()
+            region = Region(region)
         except ValueError:
             print_message('Invalid region', colour=Fore.RED)
         else:

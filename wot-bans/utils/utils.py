@@ -81,7 +81,7 @@ Also check out:
 - [Global Map Legend badge receivers]({gbadges_url})  
 - [Clan ranking by reward tanks]({tankranking_url})  
 
-Note that I am only able to know the banned players who were on the leaderboard at the time of the event_id ending.
+Note that I am only able to know the banned players who were on the leaderboard at the time of the event ending.
 '''.strip()
 GM_RUSSIAN = '''
 # Блокировка игроков в кампании {logo} {title} ({region})
@@ -133,7 +133,7 @@ The raw data and the code used is available in the GitHub repo [here](https://gi
 
 Below follows a list of the names and related statistics of **{amount_banned}** players in the {region} region that were disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing.
 
-Note that I am only able to know the banned players who were on the leaderboard at the time of the event_id ending.
+Note that I am only able to know the banned players who were on the leaderboard at the time of the event ending.
 
 ## Top 5 clans with most members banned
 {most_banned_clans}
@@ -148,7 +148,7 @@ RANKED_RUSSIAN = '''
 
 Ниже приводится список имен и связанная с ними статистика **{amount_banned}** игроков в регионе {region}, которые были дисквалифицированы из таблицы лидеров. Они не получат никаких наград, и в зависимости от предыдущих нарушений могут быть навсегда заблокированы от игры.
 
-Обратите внимание, что я могу знать только забаненных игроков, которые были в таблице лидеров на момент окончания event_id.
+Обратите внимание, что я могу узнать только тех забаненных игроков, которые были в таблице лидеров на момент окончания события.
 
 ## Топ 5 кланов с большинством забаненных членов
 {most_banned_clans}
@@ -163,7 +163,7 @@ RANKED_MANDARIN = '''
 
 以下是 {region} 地区被取消排行榜资格的 **{amount_banned}** 玩家的姓名和相关统计数据列表。 他们将不会获得任何奖励，并且根据之前的违规行为可能会被永久禁止参加比赛。
 
-请注意，我只能知道 event_id 结束时在排行榜上的被禁玩家。
+请注意，我只能知道活动结束时在排行榜上的被禁玩家。
 
 ## 被禁止成员最多的前 5 个部落
 {most_banned_clans}
@@ -186,11 +186,9 @@ class BanEvaluator(ABC):
     def __init__(self, region: Region, *args, **kwargs):
         self.region = region
 
-
     @abstractmethod
     def format_to_md(self, filename: Path):
         raise NotImplementedError()
-
 
     @abstractmethod
     def get_leaderboard(self):
@@ -200,7 +198,7 @@ class BanEvaluator(ABC):
 def print_message(
     message: str,
     start_time: float = None,
-    colour: Fore = None
+    colour: Fore = Fore.CYAN
 ) -> None:
     '''Prints a message with colour and current time to console
 
