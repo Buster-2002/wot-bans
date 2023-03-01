@@ -1,0 +1,13 @@
+ Index   | Name                 | Rank   | Clan   | Rank
+---------+----------------------+--------+--------+--------
+ 001     | Escape_From_WOT      | 3      | IMPCT  | 1
+ 002     | SEN_Tomotraa         | 6      | IMPCT  | 1
+ 003     | NegativestyI         | 9      | IMPCT  | 1
+ 004     | GLOBAL_AOMUSHI       | 10     | IMPCT  | 1
+ 005     | 728shun              | 15     | IMPCT  | 1
+ 006     | Cordyrite_Ranunculus | 16     | IMPCT  | 1
+ 007     | mako_koma            | 17     | IMPCT  | 1
+ 008     | POKER_F4CE           | 21     | IMPCT  | 1
+ 009     | ACID_EMA_TOY         | 30     | IMPCT  | 1
+ 010     | KMNHZ_mattya_888     | 37     | IMPCT  | 1
+ 011     | umedoon              | 42     | IMPCT  | 1
