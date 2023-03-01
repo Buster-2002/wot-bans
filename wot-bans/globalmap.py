@@ -78,7 +78,6 @@ class GmBans(BanEvaluator):
         self.event_id = event_id
         self.new_receivers: Optional[dict] = dict() # Only applies when assessing which players receive a tank after bans
 
-
     def get_moderator_names(self, region: Region) -> List[str]:
         """Returns the known moderator/employee in game WoT names for this region
 
@@ -132,7 +131,6 @@ class GmBans(BanEvaluator):
             author=f'[{__author__}](https://discord.com/users/764584777642672160)',
             amount_banned=len(data.keys()),
             logo=f'<img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/{self.event_id}/promo_logo.png" alt="logo" width="30"/>',
-            regulations=f'https://worldoftanks.{self.link_region}/en/content/{self.event_id}-regulations/',
             gbadges_url=base_data_url + 'gbadges.txt',
             tankranking_url=base_data_url + 'tankranking.txt'
         ))

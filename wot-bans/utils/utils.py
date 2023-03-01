@@ -73,10 +73,6 @@ The raw data and the code used is available in the GitHub repo [here](https://gi
 
 Below follows a list of the names and related statistics of **{amount_banned}** players in the {region} region that were disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing.
 
-> Using prohibited modifications or violating the game or [{title} rules]({regulations}) in any way leads to exclusion from the Alley of Fame, thereby preventing violators from receiving rewards.
->
-> \- *World of Tanks Fair Play Policy*
-
 Also check out:  
 - [Global Map Legend badge receivers]({gbadges_url})  
 - [Clan ranking by reward tanks]({tankranking_url})  
@@ -93,10 +89,6 @@ GM_RUSSIAN = '''
 
 Ниже приводится список имен и связанная с ними статистика **{amount_banned}** игроков в регионе {region}, которые были дисквалифицированы из таблицы лидеров. Они не получат никаких наград, и в зависимости от предыдущих нарушений могут быть навсегда заблокированы от игры.
 
-> Использование запрещенных модификаций или нарушение игры или [{title} события]({regulations}) каким-либо образом влечет за собой исключение из Аллеи славы, тем самым лишая нарушителей возможности получения наград.
->
-> \- *Политика честной игры в World of Tanks*
-
 Также проверьте:  
 - [получатели значков Global Map Legend]({gbadges_url})  
 - [Рейтинг клана по призовым танкам]({tankranking_url})  
@@ -112,10 +104,6 @@ GM_MANDARIN = '''
 此活动的原始数据和使用的代码可在 GitHub 存储库 [此处](https://github.com/Buster-2002/wot-bans/) 上找到。
 
 以下是 {region} 地区被取消排行榜资格的 **{amount_banned}** 玩家的姓名和相关统计数据列表。 他们将不会获得任何奖励，并且根据之前的违规行为可能会被永久禁止参加比赛。
-
-> 以任何方式使用禁止的修改或违反游戏或[{title}规则]({regulations})导致被排除在名人堂之外，从而阻止违反者获得奖励。
->
-> \- *坦克世界公平竞赛政策*
 
 另请查看:  
 - [全球地图图例徽章接收器]({gbadges_url})  
