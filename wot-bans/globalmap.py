@@ -43,21 +43,24 @@ __license__ = 'MIT'
 
 init(autoreset=True)
 SESSION = requests.Session()
-SESSION.headers = {'x-requested-with': 'XMLHttpRequest'}
+SESSION.headers = {
+    'x-requested-with': 'XMLHttpRequest',
+    'Cache-Control': 'no-cache'
+}
 PLAYER_BAN_HEADER = '''
-## Banned Players
+## Disqualified Players
 
 | Index | Player | Player Rank | Clan | Clan Rank | Fame Points | Battles Played |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
 '''.strip()
 CLAN_BAN_HEADER = '''
-## Clans with 10+ members banned
+## Clans with 10+ members disqualified
 
-| Index | Clan | Ban Amount |
+| Index | Clan | Disqualify Amount |
 |:--------------:|:--------------:|:--------------:|
 '''.strip()
 NEW_RECEIVERS_HEADER = '''
-## Players that now get a tank due to bans
+## Players that now get a tank due to disqualifications
 
 | Index | Player | Player Rank |
 |:--------------:|:--------------:|:--------------:|
@@ -207,7 +210,6 @@ class GmBans(BanEvaluator):
                 print_message(f'Received page {current_page + 1}/{r["pages_count"]}')
 
                 for entry in r['accounts_ratings']:
-                    print(entry)
                     leaderboard[entry['id']] = ({ # Key is player ID
                         'clan_tag': entry.get('clan', {}).get('tag'),
                         'clan_rank': entry.get('clan_rank'),
