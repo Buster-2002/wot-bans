@@ -127,7 +127,7 @@ class GmBans(BanEvaluator):
         # Format the markdown with translation
         base_data_url = f'https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap_data/{self.region}/{self.event_id}/'
         formatted.append(get_description(self.region, BanType.GLOBALMAP).format(
-            title=self.event_id.replace('_', ' ').title(),
+            title=self.campaign_name.title(),
             region=str(self.region).upper(),
             author=f'[{__author__}](https://discord.com/users/764584777642672160)',
             amount_banned=len(data.keys()),
@@ -254,7 +254,8 @@ def main() -> None:
     evaluator = GmBans(
         region=region,
         front_id=event_id + '_bg',
-        event_id=event_id
+        event_id=event_id,
+        campaign_name=campaign_name
     )
 
     answer = input('Do you want to get the current leaderboard data? \ny/n > ').lower().strip()
