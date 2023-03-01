@@ -68,7 +68,7 @@ NEW_RECEIVERS_HEADER = '''
 
 
 class GmBans(BanEvaluator):
-    def __init__(self, region: Region, front_id: str, event_id: str):
+    def __init__(self, region: Region, front_id: str, event_id: str, campaign_name: str):
         self.region = region
         self.link_region = 'com' if region is Region.NORTH_AMERICA else str(region)
         self.leaderboard_url = f"https://worldoftanks.{self.link_region}/en/clanwars/rating/alley/users/?event_id={{0}}&front_id={{1}}&page_size=100&page={{2}}"
@@ -76,6 +76,7 @@ class GmBans(BanEvaluator):
 
         self.front_id = front_id
         self.event_id = event_id
+        self.campaign_name = campaign_name
         self.new_receivers: Optional[dict] = dict() # Only applies when assessing which players receive a tank after bans
 
     def get_moderator_names(self, region: Region) -> List[str]:
@@ -203,6 +204,7 @@ class GmBans(BanEvaluator):
                     current_page
                 )
             ).json()
+            error_code = r.get('code', 'N/A')
 
             if r.get('status') == 'ok':
                 print_message(f'Received page {current_page + 1}/{r["pages_count"]}')
@@ -224,9 +226,11 @@ class GmBans(BanEvaluator):
                     break
 
             else:
-                error_code = r.get('code', 'N/A')
-                print_message(f'API error (HTTP {error_code}), trying again in 5s...', colour=Fore.RED)
-                time.sleep(5)
+                if error_code == 'RATING_NOT_FOUND':
+                    break
+                else:
+                    print_message(f'API error (HTTP {error_code}), trying again in 5s...', colour=Fore.RED)
+                    time.sleep(5)
 
         print_message('getting leaderboard pages', start_time)
         return leaderboard
@@ -235,11 +239,12 @@ class GmBans(BanEvaluator):
 def main() -> None:
     '''Determining what to do and putting the GmBans class to work
     '''
-    event_id = input('What is the events name? \n> ').lower().replace(' ', '_')
+    event_id = input('What is the events ID? \n> ').replace(' ', '_').lower().strip()
+    campaign_name = input('What is the campaign name? \n> ').lower().strip()
 
     while True:
         try:
-            region = input('What region do you want to check for? \n> ').lower()
+            region = input('What region do you want to check for? \n> ').lower().strip()
             region = Region(region)
         except ValueError:
             print_message('Invalid region', colour=Fore.RED)
@@ -252,7 +257,7 @@ def main() -> None:
         event_id=event_id
     )
 
-    answer = input('Do you want to get the current leaderboard data? \ny/n > ').strip()
+    answer = input('Do you want to get the current leaderboard data? \ny/n > ').lower().strip()
     if answer.lower() in YES:
         data = evaluator.get_leaderboard()
         file_operation(
@@ -261,7 +266,7 @@ def main() -> None:
             op=FileOp.WRITE
         )
 
-    answer = input('Do you want to compare data and get banned players? \ny/n > ').strip()
+    answer = input('Do you want to compare data and get banned players? \ny/n > ').lower().strip()
     if answer.lower() in YES:
         filename1, filename2 = input('Which JSON files do you want to compare? \nAnswer <filename1> <filename2> > ').split()
         banned, new_receivers = get_difference(
@@ -276,11 +281,10 @@ def main() -> None:
             op=FileOp.WRITE
         )
 
-    answer = input('Do you want to format finalized data using MarkDown? \ny/n > ').strip()
+    answer = input('Do you want to format finalized data using MarkDown? \ny/n > ').lower().strip()
     if answer.lower() in YES:
-        file = input('What JSON file do you want to format? \nAnswer <filename> > ').strip()
         formatted = evaluator.format_to_md(
-            Path(f'globalmap_data/{region}/{event_id}/{file}.json')
+            Path(f'globalmap_data/{region}/{event_id}/banned.json')
         )
         file_operation(
             data=formatted,
@@ -288,9 +292,8 @@ def main() -> None:
             op=FileOp.WRITE
         )
 
-    answer = input('Do you want to upload formatted data to a Github Gist? \ny/n ').strip()
+    answer = input('Do you want to upload formatted data to a Github Gist? \ny/n ').lower().strip()
     if answer.lower() in YES:
-        file = input('What MD file do you want to upload? \nAnswer <filename> > ').strip()
         upload_as_gist(
             Path(f'globalmap_data/{region}/{event_id}/formatted.md'),
             f'Player bans for the {event_id.title()} campaign ({str(region).upper()})'
