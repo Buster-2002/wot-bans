@@ -21,6 +21,7 @@ I will attempt to upload ban lists for each season of ranked and each global map
 - Rennaisance : [EU](https://gist.github.com/Buster-2002/d56985709696f0b057ccb90e278d6311)
 - Confrontation : [ASIA](https://gist.github.com/Buster-2002/6bc04d5dac617a996822f4e27c5dee58) - [EU](https://gist.github.com/Buster-2002/ec2cee5c54d2f6fc773c66cd83c681d1) - [NA](https://gist.github.com/Buster-2002/d3b827135fc84779cc0267f4c56d33a9) - [RU](https://gist.github.com/Buster-2002/2540640cb2afe7cb92a6600dd9870fdc)
 - Iron Age : [ASIA](https://gist.github.com/Buster-2002/0931ffb533be8ad2858fb9df6c2c5fcf) - [EU](https://gist.github.com/Buster-2002/bff3220d24d73b7216bad50b5b59258b) - [NA](https://gist.github.com/Buster-2002/504034b98f93c6d3612e2f0fec631f55) - [RU](https://gist.github.com/Buster-2002/e50a9d590d45c4af21ea84f48fac13db)
+- War Gods: [ASIA](https://gist.github.com/Buster-2002/4486f5ab2267cd3e725c62d84b8d3de0) - [EU](https://gist.github.com/Buster-2002/0b2f3560ad75f92e491a62b7259d46a8) - [NA](https://gist.github.com/Buster-2002/2741ceedd7063aa7668be283e4fe17d5)
 
 ## Data gathering
 For the sake of transparency, the raw data is included in this repo. What follows is an explanation on how the data is gathered and created, and under what scheme it is saved.
