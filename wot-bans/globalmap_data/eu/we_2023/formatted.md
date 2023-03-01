@@ -1,4 +1,4 @@
-# Player bans for the <img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/we_2023/promo_logo.png" alt="logo" width="30"/> We 2023 campaign (EU)
+# Player bans for the <img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/we_2023/promo_logo.png" alt="logo" width="30"/> War Gods campaign (EU)
 
 *Made by [Buster#5741](https://discord.com/users/764584777642672160)*
 
@@ -6,10 +6,6 @@
 The raw data and the code used is available in the GitHub repo [here](https://github.com/Buster-2002/wot-bans/).
 
 Below follows a list of the names and related statistics of **882** players in the EU region that were disqualified from the leaderboard. They will not receive any rewards, and depending on previous offenses might be permanently banned from playing.
-
-> Using prohibited modifications or violating the game or [We 2023 rules](https://worldoftanks.eu/en/content/we_2023-regulations/) in any way leads to exclusion from the Alley of Fame, thereby preventing violators from receiving rewards.
->
-> \- *World of Tanks Fair Play Policy*
 
 Also check out:  
 - [Global Map Legend badge receivers](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap_data/eu/we_2023/gbadges.txt)  
