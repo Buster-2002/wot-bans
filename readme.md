@@ -2,7 +2,9 @@
 Made by [Buster#5741](https://discord.com/users/764584777642672160)
 
 ## Introduction
-I will attempt to upload ban lists for each season of ranked and each global map event for each nation. **Use of the code, data and these lists falls under MIT license and are therefore free to use in any way you want.**
+I will attempt to upload "ban" lists for each season of ranked and each global map event for each nation. Such lists just contain the players that were disqualified from the HoF for that event. This may also mean they were permanently banned, but that information isn\'t available. 
+
+**Use of the code, data and these lists falls under MIT license and are therefore free to use in any way you want.**
 
 ## Uses
 - [`wot-bans/globalmap.py`](https://github.com/Buster-2002/wot-bans/blob/master/wot-bans/globalmap.py): Get/compare/format (ban) data for WoT Global Map events 
@@ -32,14 +34,14 @@ Gathered by saving the data obtained from each page of the leaderboard ([EU](htt
 `wot-bans/globalmap_data/{region}/{eventname}/{month}-{day}_{hour}-{minute}_data.json`  
 `wot-bans/ranked_data/{region}/{eventname}/{month}-{day}_{hour}-{minute}_data.json`  
 
-**Raw Banned data**  
+**Raw Disqualified data**  
 Created by comparing two raw leaderboard data sets (checking which account ids (the keys) were removed). Note that I require both the leaderboard data from before and after the disqualifications were propagated on the API.
 
-`wot-bans/globalmap_data/{region}/{eventname}/banned.json`  
-`wot-bans/ranked_data/{region}/{eventname}/banned.json`  
+`wot-bans/globalmap_data/{region}/{eventname}/disqualified.json`  
+`wot-bans/ranked_data/{region}/{eventname}/disqualified.json`  
 
 **Formatted data**  
-Created by taking the raw banned data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). Along with this I also show which clans had X+ members banned, and which players will now receive a tank as result of the bans if it is a Global Map ban list.
+Created by taking the raw disqualified data and formatting it in a way that is easily readable and appealing to look at (using MarkDown). Along with this I also show which clans had X+ members disqualified, and which players will now receive a tank as result of the bans if it is a Global Map ban list.
 
 `wot-bans/globalmap_data/{region}/{eventname}/formatted.md`  
 `wot-bans/ranked_data/{region}/{eventname}/formatted.md`  
