@@ -1,0 +1,21 @@
+ Index   | Name                   | Rank   | Clan   | Rank
+---------+------------------------+--------+--------+--------
+ 001     | O_P_Hacker             | 1      | CRAKD  | 1
+ 002     | haglar                 | 5      | CRAKD  | 1
+ 003     | Kabali_                | 6      | CRAKD  | 1
+ 004     | Stat_Paddington_Bear   | 7      | CRAKD  | 1
+ 005     | Tantalus43             | 18     | CRAKD  | 1
+ 006     | Major_Kenway           | 20     | CRAKD  | 1
+ 007     | chase_no_cinco         | 23     | CRAKD  | 1
+ 008     | VovaUkrainian          | 29     | CRAKD  | 1
+ 009     | Taken4Granite          | 31     | CRAKD  | 1
+ 010     | John_The_Terrible      | 36     | CRAKD  | 1
+ 011     | Chutes_N_Ladders       | 37     | CRAKD  | 1
+ 012     | FISHYatPURDUEwitFALCON | 44     | CRAKD  | 1
+ 013     | 0ctobear               | 50     | CRAKD  | 1
+ 014     | MeMeBigBoi             | 64     | CRAKD  | 1
+ 015     | BailesNoBezmiega       | 65     | CRAKD  | 1
+ 016     | jordan_225             | 74     | CRAKD  | 1
+ 017     | CptBastidas            | 75     | CRAKD  | 1
+ 018     | Ste__mon_              | 86     | CRAKD  | 1
+ 019     | Nashee_                | 90     | CRAKD  | 1
