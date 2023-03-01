@@ -47,13 +47,13 @@ SESSION.headers = {
     'x-requested-with': 'XMLHttpRequest',
     'Cache-Control': 'no-cache'
 }
-PLAYER_BAN_HEADER = '''
+PLAYER_DISQUALIFY_HEADER = '''
 ## Disqualified Players
 
 | Index | Player | Player Rank | Clan | Clan Rank | Fame Points | Battles Played |
 |:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
 '''.strip()
-CLAN_BAN_HEADER = '''
+CLAN_DISQUALIFY_HEADER = '''
 ## Clans with 10+ members disqualified
 
 | Index | Clan | Disqualify Amount |
@@ -101,24 +101,24 @@ class GmBans(BanEvaluator):
         Returns:
             str: The formatted data
         '''
-        formatted, is_employee_banned, start_time, nl = [], False, time.perf_counter(), '\n'
+        formatted, an_employee_disqualified, start_time, nl = [], False, time.perf_counter(), '\n'
         data = file_operation(file=filename, op=FileOp.READ)
 
-        # Sort banned players by their rank respectively
+        # Sort disqualified players by their rank respectively
         data = dict(sorted(
             data.items(),
             key=lambda item: item[1]['player_rank'],
             reverse=False
         ))
 
-        # Get clans that have 10 + of their members banned
-        clans_with_10plus_bans = list(sorted([
-                (stats_link(clan_tag, self.region, is_clan=True), ban_amount)
-                for clan_tag, ban_amount in
+        # Get clans that have 10 + of their members disqualified
+        clans_with_10plus_disqualified = list(sorted([
+                (stats_link(clan_tag, self.region, is_clan=True), disqualify_amount)
+                for clan_tag, disqualify_amount in
                 Counter([
                     v['clan_tag'] for v in data.values() if v['clan_tag'] is not None
                 ]).items()
-                if ban_amount >= 10
+                if disqualify_amount >= 10
             ],
             key=lambda item: item[1],
             reverse=True
@@ -130,7 +130,7 @@ class GmBans(BanEvaluator):
             title=self.campaign_name.title(),
             region=str(self.region).upper(),
             author=f'[{__author__}](https://discord.com/users/764584777642672160)',
-            amount_banned=len(data.keys()),
+            amount_disqualified=len(data.keys()),
             logo=f'<img src="https://eu.wargaming.net/globalmap/images/app/features/events/images/{self.event_id}/promo_logo.png" alt="logo" width="30"/>',
             gbadges_url=base_data_url + 'gbadges.txt',
             tankranking_url=base_data_url + 'tankranking.txt'
@@ -138,22 +138,23 @@ class GmBans(BanEvaluator):
 
         formatted.append(nl)
 
-        # Add the most clan ban rows
-        formatted.append(CLAN_BAN_HEADER)
-        for i, (clan_name, ban_amount) in enumerate(clans_with_10plus_bans, 1):
-            entry = f'| {i} | {clan_name} | {ban_amount} |'
+        # Add the "CLAN_DISQUALIFY" rows
+        formatted.append(CLAN_DISQUALIFY_HEADER)
+        for i, (clan_name, disqualify_amount) in enumerate(clans_with_10plus_disqualified, 1):
+            entry = f'| {i} | {clan_name} | {disqualify_amount} |'
             formatted.append(entry)
 
         formatted.append(nl)
 
-        # Add the player ban rows
-        formatted.append(PLAYER_BAN_HEADER)
+        # Add the "PLAYER_DISQUALIFY" rows
+        formatted.append(PLAYER_DISQUALIFY_HEADER)
         for i, v in enumerate(data.values(), 1):
             name = stats_link(v['player_name'], self.region)
 
-            # Add asterix if the "banned" player is part of WG staff team for region
+            # Add asterix if the "disqualified" player is part of WG staff team for region
+            # and add a footnote to the bottom of the table
             if v['player_name'] in self.moderator_names:
-                is_employee_banned = True
+                an_employee_disqualified = True
                 name = '\* ' + name
 
             entry = [
@@ -170,12 +171,12 @@ class GmBans(BanEvaluator):
 
         formatted.append(nl)
 
-        if is_employee_banned is True:
+        if an_employee_disqualified is True:
             formatted.append('\*: Wargaming staff members who removed themselves from the leaderboard as to not "steal" tanks from regular players.')
 
         formatted.append(nl)
 
-        # Add new receivers rows
+        # Add "NEW_RECEIVERS" rows
         formatted.append(NEW_RECEIVERS_HEADER)
         for i, v in enumerate(self.new_receivers.values(), 1):
             entry = f'''| {i} | {stats_link(v['player_name'], self.region)} | from {v['old_rank']} to {v['new_rank']} | '''
@@ -228,6 +229,7 @@ class GmBans(BanEvaluator):
             else:
                 if error_code == 'RATING_NOT_FOUND':
                     break
+
                 else:
                     print_message(f'API error (HTTP {error_code}), trying again in 5s...', colour=Fore.RED)
                     time.sleep(5)
@@ -267,25 +269,25 @@ def main() -> None:
             op=FileOp.WRITE
         )
 
-    answer = input('Do you want to compare data and get banned players? \ny/n > ').lower().strip()
+    answer = input('Do you want to compare data and get disqualified players? \ny/n > ').lower().strip()
     if answer.lower() in YES:
         filename1, filename2 = input('Which JSON files do you want to compare? \nAnswer <filename1> <filename2> > ').split()
-        banned, new_receivers = get_difference(
+        disqualified, new_receivers = get_difference(
             Path(f'globalmap_data/{region}/{event_id}/{filename1}.json'),
             Path(f'globalmap_data/{region}/{event_id}/{filename2}.json'),
             include_new_receivers=True
         )
         evaluator.new_receivers = new_receivers
         file_operation(
-            data=banned,
-            file=Path(f'globalmap_data/{region}/{event_id}/banned.json'),
+            data=disqualified,
+            file=Path(f'globalmap_data/{region}/{event_id}/disqualified.json'),
             op=FileOp.WRITE
         )
 
     answer = input('Do you want to format finalized data using MarkDown? \ny/n > ').lower().strip()
     if answer.lower() in YES:
         formatted = evaluator.format_to_md(
-            Path(f'globalmap_data/{region}/{event_id}/banned.json')
+            Path(f'globalmap_data/{region}/{event_id}/disqualified.json')
         )
         file_operation(
             data=formatted,
@@ -297,7 +299,7 @@ def main() -> None:
     if answer.lower() in YES:
         upload_as_gist(
             Path(f'globalmap_data/{region}/{event_id}/formatted.md'),
-            f'Player bans for the {event_id.title()} campaign ({str(region).upper()})'
+            f'Player disqualifications for the {campaign_name.title()} campaign ({str(region).upper()})'
         )
 
 if __name__ == '__main__':
